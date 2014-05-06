@@ -31,8 +31,11 @@
                 out.print("ID: " + account.getId() + "<BR>");
                 out.print("Role: " + account.getRole() + "<BR>");
                 out.print("Username: " + account.getUsername() + "<BR>");
-                out.print(request.getParameter("kategori") + "<BR>");
-                
+                out.print("Kategori: "+request.getParameter("dropdown1") + "<BR>");
+                out.print("Berat: "+request.getParameter("berat") + "<BR>");
+                out.print("Tanggal Jemput: "+request.getParameter("tanggaljemput") + "<BR>");
+                out.print("Jam Penjemputan: "+request.getParameter("jamjemput")+"<BR>");
+                out.print("Keterangan Tambahan: "+request.getParameter("keterangan") + "<BR>");
             }
         %>
         <div class="ui green inverted menu">
@@ -74,7 +77,15 @@
                                     <div class="ui segment">
                                         <div class="ui top attached label">Jenis Sampah</div>
                                         <div class="ui fluid dropdown">
-                                            <div name="kategori" class="text">Daftar Jenis Sampah</div>
+                                            <input type="hidden" name="dropdown1" value="default">
+                                            <script>
+                                                function test1() {
+                                                    var kategori = document.getElementById("kategori");
+                                                    var s = document.getElementsByName("dropdown1");
+                                                    s.value = kategori.innerHTML;
+                                                }
+                                            </script>
+                                            <div id="kategori" name="kategori" class="text"  onclick="test1()">Daftar Jenis Sampah</div>
                                             <i class="dropdown icon"></i>
                                             <div class="menu">
                                                 <div class="item">Botol Plastik</div>
@@ -91,7 +102,7 @@
                                 <div class="column">
                                     <div class="ui segment">
                                         <div class="ui top attached label">Berat</div>
-                                        <input placeholder="Dalam Kilogram" type="text">
+                                        <input name="berat" placeholder="Dalam Kilogram" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +111,7 @@
                                     <div class="ui segment">
                                         <div class="ui top attached label">Tanggal Penjemputan</div>
                                         <div class="date field">
-                                            <input placeholder="xx/xx/xxxx" type="text">
+                                            <input name="tanggaljemput" placeholder="xx/xx/xxxx" type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +121,7 @@
                                     <div class="ui segment">
                                         <div class="ui top attached label">Jam Penjemputan</div>
                                         <div class="date field">
-                                            <input placeholder="xx:xx" type="text">
+                                            <input name="jamjemput" placeholder="xx:xx" type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +131,7 @@
                                     <div class="ui segment">
                                         <div class="ui top attached label">Keterangan Tambahan</div>
                                         <div class="field">
-                                            <input placeholder="" type="text">
+                                            <input name="keterangan" placeholder="" type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -128,7 +139,8 @@
                         </div>
                     </div>
 
-                    <button type="submit"><div class="positive ui button">Kirim</div></button>
+                    
+                    <button type="submit" onclick="test1()"><div class="positive ui button">Kirim</div></button>
                 </form>
             </div>
         </div>
