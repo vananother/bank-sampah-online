@@ -36,6 +36,7 @@
                 out.print("Tanggal Jemput: "+request.getParameter("tanggaljemput") + "<BR>");
                 out.print("Jam Penjemputan: "+request.getParameter("jamjemput")+"<BR>");
                 out.print("Keterangan Tambahan: "+request.getParameter("keterangan") + "<BR>");
+                
             }
         %>
         <div class="ui green inverted menu">
