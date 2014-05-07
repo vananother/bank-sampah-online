@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome to Bank Sampah Online</title>
+        <title>Welcome to Bank Sampah Online AAATESGITHUB</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
     </head>
     <body background="assets/images/wood013.jpg">
