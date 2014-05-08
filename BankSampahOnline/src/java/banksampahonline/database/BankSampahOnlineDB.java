@@ -5,6 +5,7 @@
 package banksampahonline.database;
 
 import banksampahonline.util.Account;
+import banksampahonline.util.Sampah;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -62,6 +63,7 @@ public class BankSampahOnlineDB {
         }
     }
 
+    /*
     public boolean addAccount(String username, String password) {
         boolean isValid = true;
         try {
@@ -78,13 +80,13 @@ public class BankSampahOnlineDB {
             closeConnection();
         }
         return isValid;
-    }
+    }*/
 
-    public boolean addPengguna(int id, String username, String firstname, String lastname, String email, String alamat, String phone) {
+    public boolean addAccount(String username, String password, String firstname, String lastname, String email, String alamat, String phone) {
         boolean isValid = true;
         try {
-            String query = "INSERT INTO pengguna (id, username, firstname, lastname, email, alamat, phone)"
-                    + " VALUES ('" + id + "', '" + username + "', '" + firstname + "', '" + lastname + "', '" + email
+            String query = "INSERT INTO akun (username, password, firstname, lastname, email, alamat, phone)"
+                    + " VALUES ('" + username + "', '" + password + "', '" + firstname + "', '" + lastname + "', '" + email
                     + "', '" + alamat + "', '" + phone + "');";
 
             openConnection();
@@ -99,6 +101,25 @@ public class BankSampahOnlineDB {
         return isValid;
     }
 
+    public boolean addSampah(Sampah sampah){
+        boolean isValid = true;
+        try {
+            String query = "INSERT INTO sampah (id_pengguna, kategori, jumlah, status, tanggal, jam, keterangan)"
+                    + " VALUES ('" + sampah.getIdPengguna() + "', '" + sampah.getKategori() + "', '" + sampah.getJumlah() + "', '" + sampah.getStatus() + "', '" + sampah.getTanggal()
+                    + "', '" + sampah.getJam() + "', '" + sampah.getKeterangan() + "');";
+
+            openConnection();
+            int res = stmt.executeUpdate(query);
+
+        } catch (SQLException ex) {
+            failBecause = ex.getMessage();
+            isValid = false;
+        } finally {
+            closeConnection();
+        }
+        return isValid;
+    }
+    
     public int getAccountID(String username) {
         int val = 0;
         try {
@@ -113,7 +134,7 @@ public class BankSampahOnlineDB {
                 val = Integer.parseInt(id);
             }
         } catch (SQLException ex) {
-            failBecause = ex.getMessage();
+            failBecause = ex.getMessage()+" "+ex.getErrorCode();            
         } finally {
             closeConnection();
         }

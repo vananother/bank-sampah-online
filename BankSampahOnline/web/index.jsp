@@ -11,14 +11,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome to Bank Sampah Online TesVerdiGithub2</title>
+        <title>Selamat Datang di Bank Sampah Online</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
     </head>
     <body background="assets/images/wood013.jpg">
         <%
             BankSampahOnlineDB db = new BankSampahOnlineDB();
             boolean addAccount = false;
-            boolean regFail = false;
+            boolean regSuccess = false;
+            int errCode = 0;
+            String errMsg = "Registrasi Gagal";
             //handle session already exist
             if (request.getParameter("logout") != null) {
                 session.setAttribute("account", null);
@@ -47,27 +49,52 @@
                 out.print("address: " + address + " <br>");
                 out.print("phone: " + phone + " <br>");
 
-                boolean regSuccess = db.addAccount(username, encPass);
-                if (regSuccess) {
-                    int id = db.getAccountID(username);
-                    regFail = db.addPengguna(id, username, firstname, lastname, email, address, phone);
-                } else {
-                    regFail = false;
+                errCode = UtilMethods.registrationFormValidation(username, password, password2, firstname, lastname, email, address, phone);
+                switch (errCode) {
+                    case 0:
+                        regSuccess = db.addAccount(username, encPass, firstname, lastname, email, address, phone);
+                        break;
+                    case 1:
+                        errMsg = "Username harus 4-32 karakter atau lebih.";
+                        break;
+                    case 2:
+                        errMsg = "Password harus 6 karakter atau lebih.";
+                        break;
+                    case 3:
+                        errMsg = "Konfirmasi Password tidak sesuai.";
+                        break;
+                    case 4:
+                        errMsg = "Nama Depan tidak boleh kosong.";
+                        break;
+                    case 5:
+                        errMsg = "Nama belakang tidak boleh kosong.";
+                        break;
+                    case 6:
+                        errMsg = "Email tidak boleh kosong.";
+                        break;
+                    case 7:
+                        errMsg = "Alamat tidak boleh kosong.";
+                        break;
+                    case 8:
+                        errMsg = "Masukkan nomor telepon yang dapat dihubungi.";
+                        break;
+                    case 9:
+                        errMsg = "Username harus Alphanumeric.";
+                        break;
                 }
             }
+
             if (session.getAttribute("account") != null) {
                 response.sendRedirect("Riwayat.jsp");
             }
 
         %>
 
-        <%
-        %>
         <div class="container">
             <div class="row">
                 <div class="xs-12">
                     <div class="jumbotron">
-                        <h1 align="center">Welcome to Bank Sampah Online!!!</h1>
+                        <h1 align="center">Selamat Datang di Bank Sampah Online!!!</h1>
                     </div>
                 </div>
             </div>
@@ -78,40 +105,62 @@
                         <%                            //handle logout
                             if (request.getParameter("logout") != null) {
                         %>
-                        <label>Logout Success</label>
+                        <div style="text-align: center">
+                            <label class="label label-success">Logout Sukses</label>
+                        </div>
                         <%
                         } else if (request.getParameter("loginFail") != null) {
                         %>
-                        <label>Login Fail, Wrong Username or Password</label>   
+                        <div style="text-align: center">
+                            <label class="label label-danger">Login Gagal, Salah Username atau Password</label>   
+                        </div>
                         <%
                         } else if (addAccount) {
-                            if (regFail) {
-                        %> 
-                        <label>Registration Failed, Check Your Input</label> 
-                        <%
-                            } else {
-                        %> 
-                        <label>Registration Success</label> 
-                        <%
-                            }
-                        }
+                            if (regSuccess) {
                         %>
-                        <form role="form" method="post" action="Riwayat.jsp">
+                        <div style="text-align: center">
+                            <label class="label label-success">Registrasi Sukses</label>
+                        </div>
+                        <%
+                        } else {
+                        %> 
+                        <div style="text-align: center">
+                            <label class="label label-danger"><%= errMsg%></label>
+                        </div>
+                        <%
+                                }
+                            }
+                        %>
+                        <script>
+                            function validLogin() {
+                                if (document.loginForm.username.value == "") {
+                                    alert("Username tidak boleh kosong."); //java script message will be display
+                                    document.loginform.userName.focus();
+                                    return false;
+                                }
+
+                                if (document.loginForm.password.value == "") {
+                                    alert("Password tidak boleh kosong."); //java script message will be display
+                                    document.loginform.password.focus();
+                                    return false;
+                                }
+                                return true;
+                            }
+                        </script>
+                        <form name="loginForm" action="Riwayat.jsp" onsubmit="return validLogin()"  method="post" >
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Username:</label>
-                                <input name="username" type="username" class="form-control" id="exampleInputEmail1" placeholder="Enter username">
+                                <input name="username" type="username" class="form-control" id="exampleInputEmail1" placeholder="Masukkan username anda">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Password:</label>
-                                <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Masukkan password">
                             </div>
                             <div style="text-align:center">
-                                <button type="submit" class="btn btn-default">Login</button>
+                                <button type="submit" class="btn btn-primary">Login</button>
                             </div>
-                            <a href="register.jsp"><button type="button" class="btn btn-success">Register new account</button></a><br/>
-                            <button type="button" class="btn btn-danger">Forget Password</button>
-                            
-
+                            <a href="register.jsp"><button type="button" class="btn btn-success" value="submit">Registrasi</button></a><br/>
+                            <!--button type="button" class="btn btn-danger">Forget Password</button-->
                         </form>
                     </div>
                 </div>

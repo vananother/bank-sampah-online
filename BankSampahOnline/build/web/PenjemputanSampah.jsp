@@ -67,7 +67,7 @@
 
         <div class="ui celled grid">
             <div class="ten wide right column">
-                <form role="form" method="post" action="PenjemputanSampah.jsp">
+                <form role="form" method="post" action="Riwayat.jsp">
                     <h1 class="ui center header">Meminta Penjemputan Sampah</h1>
                     <div class="ui divider"></div>
                     <div class="ui divider"></div>
@@ -79,6 +79,7 @@
                                         <div class="ui top attached label">Jenis Sampah</div>
                                         <div class="ui fluid dropdown">
                                             <input type="hidden" name="dropdown1" value="default">
+                                            <input type="hidden" name="addnew" value="1">
                                             <script>
                                                 function test1() {
                                                     var kategori = document.getElementById("kategori");
