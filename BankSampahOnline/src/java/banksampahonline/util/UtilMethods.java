@@ -69,8 +69,7 @@ public class UtilMethods {
         if(phone == null || phone.trim().length() < 1){
             return 8;
         }
-        
-        
+               
         return 0;
     }
 }

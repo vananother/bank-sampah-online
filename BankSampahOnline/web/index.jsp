@@ -20,6 +20,7 @@
             boolean addAccount = false;
             boolean regSuccess = false;
             int errCode = 0;
+            //String t = request.getAttribute("textValue").toString();
             String errMsg = "Registrasi Gagal";
             //handle session already exist
             if (request.getParameter("logout") != null) {
@@ -147,10 +148,20 @@
                                 return true;
                             }
                         </script>
-                        <form name="loginForm" action="Riwayat.jsp" onsubmit="return validLogin()"  method="post" >
+                        <% 
+                            if(request.getAttribute("textValue") != null){
+                                out.print(request.getAttribute("textValue").toString());
+                            } else {
+                                out.print("ini null");
+                            }
+                             
+                        %>
+                        <form name="loginForm" action="LoginServlet"  method="post" >
+                            <input type="text" name="done" value='${textValue}'/> 
+                            
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Username:</label>
-                                <input name="username" type="username" class="form-control" id="exampleInputEmail1" placeholder="Masukkan username anda">
+                                <input required name="username" type="username" class="form-control" id="exampleInputEmail1" placeholder="Masukkan username anda">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Password:</label>
