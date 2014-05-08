@@ -23,11 +23,9 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
-    
     HttpSession session;
     BankSampahOnlineDB db;
-    
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -69,7 +67,12 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        session = request.getSession();
+        if (session.getAttribute("account") != null) {
+            request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -87,10 +90,10 @@ public class LoginServlet extends HttpServlet {
         db = new BankSampahOnlineDB();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
-        boolean login = db.isLoginValid(username, password);
-        if(login){
-            session.setAttribute("account", db.login(username, password));
+        String encPass = UtilMethods.hashInput(password);
+        boolean login = db.isLoginValid(username, encPass);
+        if (login) {
+            session.setAttribute("account", db.login(username, encPass));
             request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
         } else {
             session.setAttribute("account", null);

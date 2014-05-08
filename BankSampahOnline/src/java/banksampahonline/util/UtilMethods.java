@@ -34,42 +34,80 @@ public class UtilMethods {
         }
         return output;
     }
-    
-    public static int registrationFormValidation(String username, String password1, String password2, String firstname, String lastname, String email, String alamat, String phone){
-        if(username==null || username.length() < 4 || username.length() > 32){
+
+    public static int registrationFormValidation(String username, String password1, String password2, String firstname, String lastname, String email, String alamat, String phone) {
+        if (username == null || username.length() < 4 || username.length() > 32) {
             return 1;
-        } else if(!username.matches("[A-Za-z0-9]+")){
+        } else if (!username.matches("[A-Za-z0-9]+")) {
             return 9;
         }
-        
-        if(password1 == null || password1.length() < 6){
+
+        if (password1 == null || password1.length() < 6) {
             return 2;
         }
-        
-        if(password2 == null || !password2.equals(password1)){
+
+        if (password2 == null || !password2.equals(password1)) {
             return 3;
         }
-        
-        if(firstname == null || firstname.trim().length() < 1){
+
+        if (firstname == null || firstname.trim().length() < 1) {
             return 4;
         }
-        
+
         //if(lastname == null || lastname.trim().length() < 1){
         //    return 5;
         //}
-        
-        if(email == null || email.trim().length() < 1){
+        if (email == null || email.trim().length() < 1) {
             return 6;
         }
-        
-        if(alamat == null || alamat.trim().length() < 1){
+
+        if (alamat == null || alamat.trim().length() < 1) {
             return 7;
         }
-        
-        if(phone == null || phone.trim().length() < 1){
+
+        if (phone == null || phone.trim().length() < 1) {
             return 8;
         }
-               
+
         return 0;
+    }
+
+    public static String regFormValidation(String username, String password1, String password2, String firstname, String lastname, String email, String alamat, String phone) {
+        String errMsg = "";
+        int errCode = registrationFormValidation(username, password1, password2, firstname, lastname, email, alamat, phone);
+        switch (errCode) {
+            case 0:
+                errMsg = "";
+                //regSuccess = db.addAccount(username, encPass, firstname, lastname, email, address, phone);
+                break;
+            case 1:
+                errMsg = "<label class=\"label label-danger\">Username harus 4-32 karakter atau lebih.</label>";
+                break;
+            case 2:
+                errMsg = "<label class=\"label label-danger\">Password harus 6 karakter atau lebih.</label>";
+                break;
+            case 3:
+                errMsg = "<label class=\"label label-danger\">Konfirmasi Password tidak sesuai.</label>";
+                break;
+            case 4:
+                errMsg = "<label class=\"label label-danger\">Nama Depan tidak boleh kosong.</label>";
+                break;
+            case 5:
+                errMsg = "<label class=\"label label-danger\">Nama belakang tidak boleh kosong.</label>";
+                break;
+            case 6:
+                errMsg = "<label class=\"label label-danger\">Email tidak boleh kosong.</label>";
+                break;
+            case 7:
+                errMsg = "<label class=\"label label-danger\">Alamat tidak boleh kosong.</label>";
+                break;
+            case 8:
+                errMsg = "<label class=\"label label-danger\">Masukkan nomor telepon yang dapat dihubungi.</label>";
+                break;
+            case 9:
+                errMsg = "<label class=\"label label-danger\">Username harus Alphanumeric.</label>";
+                break;
+        }
+        return errMsg;
     }
 }

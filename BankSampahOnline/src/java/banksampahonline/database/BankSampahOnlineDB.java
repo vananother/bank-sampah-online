@@ -63,25 +63,6 @@ public class BankSampahOnlineDB {
         }
     }
 
-    /*
-    public boolean addAccount(String username, String password) {
-        boolean isValid = true;
-        try {
-            String query = "INSERT INTO akun (role, username, password) VALUES (\"pengguna\", \"" + username
-                    + "\", \"" + password + "\");";
-
-            openConnection();
-            int res = stmt.executeUpdate(query);
-
-        } catch (SQLException ex) {
-            failBecause = ex.getMessage();
-            isValid = false;
-        } finally {
-            closeConnection();
-        }
-        return isValid;
-    }*/
-
     public boolean addAccount(String username, String password, String firstname, String lastname, String email, String alamat, String phone) {
         boolean isValid = true;
         try {
@@ -173,6 +154,12 @@ public class BankSampahOnlineDB {
                 String role = res.getObject(2).toString();
                 String uname = res.getObject(3).toString();
                 account = new Account(Integer.parseInt(id), role, uname);
+                account.setFirstname(res.getObject(5).toString());
+                account.setLastname(res.getObject(6).toString());
+                account.setEmail(res.getObject(7).toString());
+                account.setAlamat(res.getObject(8).toString());
+                account.setPhone(res.getObject(9).toString());
+                account.setUangvirtual(Double.parseDouble(res.getObject(10).toString()));
                 return account;
             } else {
                 account = null;

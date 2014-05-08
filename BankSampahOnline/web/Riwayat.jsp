@@ -27,67 +27,23 @@
         <title>Dashboard</title>
     </head>
     <body id="feed">
-        <%
-            String username;
-            int id;
+        <% //debugging
             Account account = null;
-            BankSampahOnlineDB bsodb = new BankSampahOnlineDB();
             if (session.getAttribute("account") == null) {
-
-                username = request.getParameter("username");
-                String password = request.getParameter("password");
-                String encPass = UtilMethods.hashInput(request.getParameter("password"));
-
-                boolean login = bsodb.isLoginValid(username, encPass);
-                if (login) {
-                    account = bsodb.login(username, encPass);
-                    session.setAttribute("account", account);
-                    out.print("account id: " + account.getId() + "<br>");
-                    out.print("account role: " + account.getRole() + "<br>");
-                    out.print("account username: " + account.getUsername() + "<br>");
-                    out.print("Account Info: <BR>");
-                    out.print("ID: " + account.getId() + "<BR>");
-                    out.print("Role: " + account.getRole() + "<BR>");
-                    out.print("Username: " + account.getUsername() + "<BR>");
-                } else { //login fail
-                    session.setAttribute("account", null);
-                    response.sendRedirect("index.jsp?loginFail=1");
-                }
-                out.print("entered username: " + username + "<br>");
-                out.print("entered password: " + password + "<br>");
-                out.print("encoded password: " + UtilMethods.hashInput(password) + "<br>");
+                out.print("session.getattribut(account) == null <br>");
             } else {
-                account = null;
                 account = (Account) session.getAttribute("account");
                 out.print("already login <br>");
                 out.print("Account Info: <BR>");
                 out.print("ID: " + account.getId() + "<BR>");
                 out.print("Role: " + account.getRole() + "<BR>");
                 out.print("Username: " + account.getUsername() + "<BR>");
-            }
-
-            String addnew = request.getParameter("addnew");
-            if (addnew != null) {
-                Sampah sampah = new Sampah();
-                sampah.setIdPengguna(account.getId());
-                sampah.setKategori(request.getParameter("dropdown1"));
-                sampah.setJumlah(Double.parseDouble(request.getParameter("berat")));
-                sampah.setTanggal(request.getParameter("tanggaljemput"));
-                sampah.setJam(request.getParameter("jamjemput"));
-                sampah.setKeterangan(request.getParameter("keterangan"));
-                boolean addsukses = bsodb.addSampah(sampah);
-                if (addsukses) {
-                    out.print("Permintaan penjemputan telah terdaftar: <BR>");
-                } else {
-                    out.print("Permintaan penjemputan gagal <BR>");
-                }
-                out.print("Form Info: <BR>");
-                out.print("Kategori: " + request.getParameter("dropdown1") + "<BR>");
-                out.print("Berat: " + request.getParameter("berat") + "<BR>");
-                out.print("Tanggal Jemput: " + request.getParameter("tanggaljemput") + "<BR>");
-                out.print("Jam Penjemputan: " + request.getParameter("jamjemput") + "<BR>");
-                out.print("Keterangan Tambahan: " + request.getParameter("keterangan") + "<BR>");
-
+                out.print("Firstname: "+ account.getFirstname() + "<BR>");
+                out.print("Lastname: "+ account.getLastname() + "<BR>");
+                out.print("Email: "+ account.getEmail() + "<BR>");
+                out.print("Address: "+ account.getAlamat() + "<BR>");
+                out.print("Phone: "+ account.getPhone() + "<BR>");
+                out.print("Balance: "+ account.getUangvirtual()+ "<BR>");
             }
         %>
         <div class="ui green inverted menu">
