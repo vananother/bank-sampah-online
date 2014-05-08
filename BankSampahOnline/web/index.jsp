@@ -103,6 +103,9 @@
                 <div class="col-xs-3"></div>
                 <div class="col-xs-6">
                     <div class="jumbotron">
+                        <div style="text-align: center">
+                            ${errorMessage}
+                        </div>
                         <%                            //handle logout
                             if (request.getParameter("logout") != null) {
                         %>
@@ -132,7 +135,7 @@
                                 }
                             }
                         %>
-                        <script>
+                        <!--script>
                             function validLogin() {
                                 if (document.loginForm.username.value == "") {
                                     alert("Username tidak boleh kosong."); //java script message will be display
@@ -147,18 +150,8 @@
                                 }
                                 return true;
                             }
-                        </script>
-                        <% 
-                            if(request.getAttribute("textValue") != null){
-                                out.print(request.getAttribute("textValue").toString());
-                            } else {
-                                out.print("ini null");
-                            }
-                             
-                        %>
+                        </script-->
                         <form name="loginForm" action="LoginServlet"  method="post" >
-                            <input type="text" name="done" value='${textValue}'/> 
-                            
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Username:</label>
                                 <input required name="username" type="username" class="form-control" id="exampleInputEmail1" placeholder="Masukkan username anda">

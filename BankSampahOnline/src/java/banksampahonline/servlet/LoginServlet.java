@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package banksampahonline.servlet;
 
+import banksampahonline.database.BankSampahOnlineDB;
+import banksampahonline.util.UtilMethods;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -21,6 +23,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
+    
+    HttpSession session;
+    BankSampahOnlineDB db;
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,7 +46,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
+            out.println("<title>Servlet NewServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
@@ -49,7 +56,6 @@ public class LoginServlet extends HttpServlet {
             out.close();
         }
     }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -63,9 +69,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.sendRedirect("index.jsp");
-        String textValue="aaa";
-        request.setAttribute("textValue",textValue);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
@@ -80,10 +83,20 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        session = request.getSession();
+        db = new BankSampahOnlineDB();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         
-        String textValue="aaa";
-        request.setAttribute("textValue",textValue);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        boolean login = db.isLoginValid(username, password);
+        if(login){
+            session.setAttribute("account", db.login(username, password));
+            request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+        } else {
+            session.setAttribute("account", null);
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Login Gagal, Salah Username atau Password</label>");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
     }
 
     /**
