@@ -30,13 +30,7 @@
                 out.print("Account Info: <BR>");
                 out.print("ID: " + account.getId() + "<BR>");
                 out.print("Role: " + account.getRole() + "<BR>");
-                out.print("Username: " + account.getUsername() + "<BR>");
-                out.print("Kategori: "+request.getParameter("dropdown1") + "<BR>");
-                out.print("Berat: "+request.getParameter("berat") + "<BR>");
-                out.print("Tanggal Jemput: "+request.getParameter("tanggaljemput") + "<BR>");
-                out.print("Jam Penjemputan: "+request.getParameter("jamjemput")+"<BR>");
-                out.print("Keterangan Tambahan: "+request.getParameter("keterangan") + "<BR>");
-                
+                out.print("Username: " + account.getUsername() + "<BR>");                
             }
         %>
         <div class="ui green inverted menu">
@@ -67,7 +61,7 @@
 
         <div class="ui celled grid">
             <div class="ten wide right column">
-                <form role="form" method="post" action="Riwayat.jsp">
+                <form role="form" method="post" action="PenjemputanServlet">
                     <h1 class="ui center header">Meminta Penjemputan Sampah</h1>
                     <div class="ui divider"></div>
                     <div class="ui divider"></div>
@@ -78,16 +72,9 @@
                                     <div class="ui segment">
                                         <div class="ui top attached label">Jenis Sampah</div>
                                         <div class="ui fluid dropdown">
-                                            <input type="hidden" name="dropdown1" value="default">
+                                            <input type="hidden" name="jenisSampah" id="jenisSampah" value="default">
                                             <input type="hidden" name="addnew" value="1">
-                                            <script>
-                                                function test1() {
-                                                    var kategori = document.getElementById("kategori");
-                                                    var s = document.getElementsByName("dropdown1");
-                                                    s.value = kategori.innerHTML;
-                                                }
-                                            </script>
-                                            <div id="kategori" name="kategori" class="text"  onclick="test1()">Daftar Jenis Sampah</div>
+                                            <div id="kategori" name="kategori" class="text"  onclick="jemputDropdown()">Daftar Jenis Sampah</div>
                                             <i class="dropdown icon"></i>
                                             <div class="menu">
                                                 <div class="item">Botol Plastik</div>
@@ -113,7 +100,7 @@
                                     <div class="ui segment">
                                         <div class="ui top attached label">Tanggal Penjemputan</div>
                                         <div class="date field">
-                                            <input name="tanggaljemput" placeholder="xx/xx/xxxx" type="text">
+                                            <input name="tanggaljemput" placeholder="xxxx-xx-xx" type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -142,7 +129,7 @@
                     </div>
 
                     
-                    <button type="submit" onclick="test1()"><div class="positive ui button">Kirim</div></button>
+                    <button type="submit" onclick="jemputDropdown()"><div class="positive ui button">Kirim</div></button>
                 </form>
             </div>
         </div>

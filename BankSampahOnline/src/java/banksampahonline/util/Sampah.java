@@ -20,6 +20,9 @@ public class Sampah {
     private String jam;
     private String keterangan;
 
+    public Sampah(){
+        this.status = "Belum Dijemput";
+    }
     /**
      * @return the idSampah
      */

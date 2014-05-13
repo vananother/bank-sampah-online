@@ -82,7 +82,7 @@ public class BankSampahOnlineDB {
         return isValid;
     }
 
-    public boolean addSampah(Sampah sampah){
+    public boolean addSampah(Sampah sampah) {
         boolean isValid = true;
         try {
             String query = "INSERT INTO sampah (id_pengguna, kategori, jumlah, status, tanggal, jam, keterangan)"
@@ -100,7 +100,38 @@ public class BankSampahOnlineDB {
         }
         return isValid;
     }
-    
+
+    public ArrayList<Sampah> getSampah(int accountId) {
+        ArrayList<Sampah> sesampahan = new ArrayList<Sampah>();
+        Sampah temp = new Sampah();
+        try {
+            String query = "SELECT * FROM sampah WHERE id_pengguna ='" + accountId + "'";
+            ResultSet res = null;
+            int numberOfColumns = 0;
+            openConnection();
+            res = stmt.executeQuery(query);
+            numberOfColumns = res.getMetaData().getColumnCount();
+            while (res.next()) {
+                temp = new Sampah();
+                temp.setIdSampah(Integer.parseInt(res.getObject(1).toString()));
+                temp.setIdPengguna(Integer.parseInt(res.getObject(2).toString()));
+                temp.setKategori(res.getObject(3).toString());
+                temp.setJumlah(Double.parseDouble(res.getObject(4).toString()));
+                temp.setStatus(res.getObject(5).toString());
+                temp.setTanggal(res.getObject(6).toString());
+                temp.setJam(res.getObject("jam").toString());
+                temp.setKeterangan(res.getObject("keterangan").toString());
+                sesampahan.add(temp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
+        } finally {
+            closeConnection();
+        }
+        return sesampahan;
+    }
+
     public int getAccountID(String username) {
         int val = 0;
         try {
@@ -115,7 +146,7 @@ public class BankSampahOnlineDB {
                 val = Integer.parseInt(id);
             }
         } catch (SQLException ex) {
-            failBecause = ex.getMessage()+" "+ex.getErrorCode();            
+            failBecause = ex.getMessage() + " " + ex.getErrorCode();
         } finally {
             closeConnection();
         }

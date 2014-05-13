@@ -4,6 +4,7 @@
     Author     : van
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="banksampahonline.util.Sampah"%>
 <%@page import="banksampahonline.util.Account"%>
 <%@page import="banksampahonline.util.UtilMethods"%>
@@ -38,12 +39,21 @@
                 out.print("ID: " + account.getId() + "<BR>");
                 out.print("Role: " + account.getRole() + "<BR>");
                 out.print("Username: " + account.getUsername() + "<BR>");
-                out.print("Firstname: "+ account.getFirstname() + "<BR>");
-                out.print("Lastname: "+ account.getLastname() + "<BR>");
-                out.print("Email: "+ account.getEmail() + "<BR>");
-                out.print("Address: "+ account.getAlamat() + "<BR>");
-                out.print("Phone: "+ account.getPhone() + "<BR>");
-                out.print("Balance: "+ account.getUangvirtual()+ "<BR>");
+                out.print("Firstname: " + account.getFirstname() + "<BR>");
+                out.print("Lastname: " + account.getLastname() + "<BR>");
+                out.print("Email: " + account.getEmail() + "<BR>");
+                out.print("Address: " + account.getAlamat() + "<BR>");
+                out.print("Phone: " + account.getPhone() + "<BR>");
+                out.print("Balance: " + account.getUangvirtual() + "<BR>");
+            }
+
+            BankSampahOnlineDB bdb = new BankSampahOnlineDB();
+            ArrayList<Sampah> sesampahan = bdb.getSampah(1);
+            for(Sampah temp: sesampahan){
+                out.println("id: "+temp.getIdPengguna()+"<br>");
+                out.println("kategori: "+temp.getKategori()+"<br>");
+                out.println("keterangan: "+temp.getKeterangan()+"<br>");
+                out.println("status: "+temp.getStatus()+"<br>");
             }
         %>
         <div class="ui green inverted menu">

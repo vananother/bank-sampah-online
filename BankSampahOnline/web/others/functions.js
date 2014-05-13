@@ -1,5 +1,5 @@
-function usernameValidation(input){
-    if(input.value.length < 4){
+function usernameValidation(input) {
+    if (input.value.length < 4) {
         input.setCustomValidity('Username harus 4 karakter atau lebih.');
     } else {
         // input is valid -- reset the error message
@@ -7,16 +7,16 @@ function usernameValidation(input){
     }
 }
 
-function passwordValidation(input){
-    if(input.value.length < 6){
+function passwordValidation(input) {
+    if (input.value.length < 6) {
         input.setCustomValidity('Password harus 6 karakter atau lebih.');
     } else {
         // input is valid -- reset the error message
         input.setCustomValidity('');
     }
 }
-function normalInputValidation(input){
-    if(input.value.length == 0){
+function normalInputValidation(input) {
+    if (input.value.length == 0) {
         input.setCustomValidity('Tidak boleh kosong.');
     } else {
         // input is valid -- reset the error message
@@ -24,10 +24,10 @@ function normalInputValidation(input){
     }
 }
 
-function phoneValidation(input){
-    if(input.value.length == 0){
+function phoneValidation(input) {
+    if (input.value.length == 0) {
         input.setCustomValidity('Tidak boleh kosong.');
-    } else if(isNaN(input.value)){
+    } else if (isNaN(input.value)) {
         input.setCustomValidity('Nomor telepon tidak valid.');
     } else {
         // input is valid -- reset the error message
@@ -44,6 +44,13 @@ function confirmPassword(input) {
     }
 }
 
-function submitForm(){
+function submitForm() {
     document.registerform.submit();
+}
+
+function jemputDropdown() {
+    var kategori = document.getElementById("kategori");
+    var s = document.getElementsByName("jenisSampah");
+    var j = document.getElementById("jenisSampah");
+    s.value = kategori.innerHTML;
 }
