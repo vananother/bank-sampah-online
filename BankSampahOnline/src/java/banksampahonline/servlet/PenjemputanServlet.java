@@ -54,15 +54,15 @@ public class PenjemputanServlet extends HttpServlet {
             throws ServletException, IOException {
         db = new BankSampahOnlineDB();
         session = request.getSession();
-       // Account account = (Account) session.getAttribute("account");
-        //int acid = account.getId();
+        Account account = (Account) session.getAttribute("account");
+        int acid = account.getId();
         String kategori = request.getParameter("jenisSampah");
         String berat = request.getParameter("berat");
         String tanggal = request.getParameter("tanggaljemput");
         String jam = request.getParameter("jamjemput");
         String keterangan = request.getParameter("keterangan");
         Sampah sesampahan = new Sampah();
-        sesampahan.setIdPengguna(1);
+        sesampahan.setIdPengguna(acid);
         sesampahan.setJam(jam);
         sesampahan.setTanggal(tanggal);
         sesampahan.setKategori(kategori);
@@ -86,7 +86,6 @@ public class PenjemputanServlet extends HttpServlet {
         out.println("keterangan: "+keterangan+"<br>");
         out.println("hasil add sampah: "+addComplete+"<br>");
         out.println("fail because: "+db.failBecause+"<br>");
-        out.println("<a href=\"PenjemputanSampah.jsp\">back</a>");
         out.println("</body>");
         out.println("</html>");
     }

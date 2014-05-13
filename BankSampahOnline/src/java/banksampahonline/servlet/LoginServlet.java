@@ -6,6 +6,7 @@
 package banksampahonline.servlet;
 
 import banksampahonline.database.BankSampahOnlineDB;
+import banksampahonline.util.Account;
 import banksampahonline.util.UtilMethods;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -93,8 +94,11 @@ public class LoginServlet extends HttpServlet {
         String encPass = UtilMethods.hashInput(password);
         boolean login = db.isLoginValid(username, encPass);
         if (login) {
-            session.setAttribute("account", db.login(username, encPass));
-            request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+            Account temp = db.login(username, encPass);
+            request.getSession().setAttribute("account", temp);
+            response.sendRedirect("Riwayat.jsp");
+//            session.setAttribute("account", db.login(username, encPass));
+            //request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Login Gagal, Salah Username atau Password</label>");

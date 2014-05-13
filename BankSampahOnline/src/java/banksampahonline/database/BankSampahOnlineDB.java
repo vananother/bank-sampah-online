@@ -27,7 +27,7 @@ public class BankSampahOnlineDB {
     public static final String DATABASE_PASSWORD = "";
     public Connection con = null;
     public Statement stmt = null;
-    public String failBecause = "";
+    public static String failBecause = "";
     public String opc = "kosong";
 
     public void openConnection() {
@@ -191,16 +191,16 @@ public class BankSampahOnlineDB {
                 account.setAlamat(res.getObject(8).toString());
                 account.setPhone(res.getObject(9).toString());
                 account.setUangvirtual(Double.parseDouble(res.getObject(10).toString()));
-                return account;
             } else {
                 account = null;
             }
 
             if (res.next()) {
-                return new Account(0, "Fail", "Fail");
+                return null;
             }
         } catch (SQLException ex) {
             Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
         } finally {
             closeConnection();
         }

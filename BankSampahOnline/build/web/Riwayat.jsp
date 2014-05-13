@@ -46,16 +46,20 @@
                 out.print("Phone: " + account.getPhone() + "<BR>");
                 out.print("Balance: " + account.getUangvirtual() + "<BR>");
             }
-
-            BankSampahOnlineDB bdb = new BankSampahOnlineDB();
-            ArrayList<Sampah> sesampahan = bdb.getSampah(1);
-            for(Sampah temp: sesampahan){
-                out.println("id: "+temp.getIdPengguna()+"<br>");
-                out.println("kategori: "+temp.getKategori()+"<br>");
-                out.println("jumlah: "+temp.getJumlah()+"<br>");
-                out.println("keterangan: "+temp.getKeterangan()+"<br>");
-                out.println("status: "+temp.getStatus()+"<br>");
+            
+            if (account != null) {
+                BankSampahOnlineDB bdb = new BankSampahOnlineDB();
+                ArrayList<Sampah> sesampahan = bdb.getSampah(account.getId());
+                for (Sampah temp : sesampahan) {
+                    out.println("id: " + temp.getIdPengguna() + "<br>");
+                    out.println("kategori: " + temp.getKategori() + "<br>");
+                    out.println("jumlah: " + temp.getJumlah() + "<br>");
+                    out.println("waktu: " + temp.getTanggal() + " pukul " + temp.getJam() + "<br>");
+                    out.println("keterangan: " + temp.getKeterangan() + "<br>");
+                    out.println("status: " + temp.getStatus() + "<br>");
+                }
             }
+            out.println("failure: "+BankSampahOnlineDB.failBecause);
         %>
         <div class="ui green inverted menu">
             <div class="ui black launch button">
