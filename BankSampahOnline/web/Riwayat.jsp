@@ -52,6 +52,7 @@
             for(Sampah temp: sesampahan){
                 out.println("id: "+temp.getIdPengguna()+"<br>");
                 out.println("kategori: "+temp.getKategori()+"<br>");
+                out.println("jumlah: "+temp.getJumlah()+"<br>");
                 out.println("keterangan: "+temp.getKeterangan()+"<br>");
                 out.println("status: "+temp.getStatus()+"<br>");
             }
