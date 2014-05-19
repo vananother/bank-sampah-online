@@ -3,19 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/web/index.jsp</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/src/java/banksampahonline/servlet/RegisterServlet.java</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/src/java/banksampahonline/servlet/PenjemputanServlet.java</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/src/java/banksampahonline/util/Sampah.java</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/web/register.jsp</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/src/java/banksampahonline/util/Account.java</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/web/others/functions.js</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/web/Riwayat.jsp</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/src/java/banksampahonline/util/UtilMethods.java</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/web/PenjemputanSampah.jsp</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/src/java/banksampahonline/database/BankSampahOnlineDB.java</file>
-            <file>file:/D:/My%20Documents/GitHub/bank-sampah-online/BankSampahOnline/src/java/banksampahonline/servlet/LoginServlet.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

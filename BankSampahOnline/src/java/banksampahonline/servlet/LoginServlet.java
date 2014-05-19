@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         session = request.getSession();
         if (session.getAttribute("account") != null) {
-            request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+            request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }
@@ -96,7 +96,7 @@ public class LoginServlet extends HttpServlet {
         if (login) {
             Account temp = db.login(username, encPass);
             request.getSession().setAttribute("account", temp);
-            response.sendRedirect("Riwayat.jsp");
+            response.sendRedirect("RiwayatB.jsp");
 //            session.setAttribute("account", db.login(username, encPass));
             //request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
         } else {
