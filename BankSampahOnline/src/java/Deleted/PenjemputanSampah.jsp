@@ -63,6 +63,7 @@
             <div class="ten wide right column">
                 <form role="form" method="post" action="PenjemputanServlet">
                     <h1 class="ui center header">Meminta Penjemputan Sampah</h1>
+                    
                     <div class="ui divider"></div>
                     <div class="ui divider"></div>
                     <div class="ui form">
@@ -128,7 +129,7 @@
                         </div>
                     </div>
 
-                    
+
                     <button type="submit" onclick="jemputDropdown()"><div class="positive ui button">Kirim</div></button>
                 </form>
             </div>

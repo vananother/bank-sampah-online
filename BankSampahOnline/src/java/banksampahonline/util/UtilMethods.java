@@ -110,4 +110,20 @@ public class UtilMethods {
         }
         return errMsg;
     }
+
+    public static boolean nameValidation(String name) {
+        boolean valid = false;
+        if (name.matches("([A-Za-z]+[\\s]*)+")) {
+            return true;
+        }
+        return valid;
+    }
+
+    public static boolean phoneNumberValidation(String phone) {
+        if (phone.matches("\\d")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

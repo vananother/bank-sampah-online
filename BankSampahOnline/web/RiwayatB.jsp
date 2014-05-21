@@ -21,42 +21,23 @@
     </head>
     <body id="feed">
         <% //debugging
-            Account account = null;
-            if (session.getAttribute("account") == null) {
-                out.print("session.getattribut(account) == null <br>");
+            Account account = (Account) session.getAttribute("account");
+            ArrayList<Sampah> sesampahan = new ArrayList<Sampah>();
+            if (account == null) {
+                response.sendRedirect("Login");
             } else {
-                account = (Account) session.getAttribute("account");
-                out.print("already login <br>");
-                out.print("Account Info: <BR>");
-                out.print("ID: " + account.getId() + "<BR>");
-                out.print("Role: " + account.getRole() + "<BR>");
-                out.print("Username: " + account.getUsername() + "<BR>");
-                out.print("Firstname: " + account.getFirstname() + "<BR>");
-                out.print("Lastname: " + account.getLastname() + "<BR>");
-                out.print("Email: " + account.getEmail() + "<BR>");
-                out.print("Address: " + account.getAlamat() + "<BR>");
-                out.print("Phone: " + account.getPhone() + "<BR>");
-                out.print("Balance: " + account.getUangvirtual() + "<BR>");
-            }
-            
-            if (account != null) {
                 BankSampahOnlineDB bdb = new BankSampahOnlineDB();
-                ArrayList<Sampah> sesampahan = bdb.getSampah(account.getId());
-                for (Sampah temp : sesampahan) {
-                    out.println("id: " + temp.getIdPengguna() + "<br>");
-                    out.println("kategori: " + temp.getKategori() + "<br>");
-                    out.println("jumlah: " + temp.getJumlah() + "<br>");
-                    out.println("waktu: " + temp.getTanggal() + " pukul " + temp.getJam() + "<br>");
-                    out.println("keterangan: " + temp.getKeterangan() + "<br>");
-                    out.println("status: " + temp.getStatus() + "<br>");
-                }
+                sesampahan = bdb.getSampah(account.getId());
             }
-            out.println("failure: "+BankSampahOnlineDB.failBecause);
-        %>
+%>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right">                    
                     <li><a href="index.jsp?logout=1">Keluar</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="update_profileB.jsp" style="color: #6ECFF5"><b><%= account==null?"":account.getFirstname() + " " + account.getLastname() %></b></a></li>
+                    <li><a style="color: #6ECFF5"><b>Uang virtual anda saat ini: <%= account==null?"":account.getUangvirtual() %></b></a></li>
                 </ul>
             </div>                
         </nav>
@@ -80,9 +61,12 @@
                 </div>
                 <div class="col-xs-9">
                     <h1>Riwayat Pengiriman Sampah</h1>
-                    <br>
-                    <br>
-
+                    <div style="text-align: center">
+                        ${errorMessage}
+                    </div>
+                    <a href="PenjemputanSampahB.jsp">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
                     <table class="table table-hover">
                         <tr>
                             <th>Jenis Sampah</th>
@@ -90,42 +74,27 @@
                             <th>Status</th>
                             <th>Tanggal Diterima</th>
                             <th>Bayaran</th>
+                            <th></th>
                         </tr>
-                        <tr>
-                            <td>Botol Plastik</td>
-                            <td>2 Kg</td>
-                            <td>Sudah Diterima</td>
-                            <td>11-04-2014</td>                            
-                            <td>50</td>
-                        </tr>
-                        <tr>
-                            <td>Furnitur Bekas</td>
-                            <td>10 Kg</td>
-                            <td>Sudah Diterima</td>
-                            <td>12-04-2014</td>                            
-                            <td>350</td>
-                        </tr>
-                        <tr>
-                            <td>Alat Elektronik</td>
-                            <td>5 Kg</td>
-                            <td>Sudah Diterima</td>
-                            <td>14-04-2014</td>
-                            <td>200</td>
-                        </tr>
-                        <tr>
-                            <td>Baju Bekas</td>
-                            <td>2 Kg</td>
-                            <td>Sudah Diterima</td>
-                            <td>15-04-2014</td>                            
-                            <td>300</td>
-                        </tr>
-                        <tr>
-                            <td>Mainan</td>
-                            <td>3 Kg</td>
-                            <td>Belum Diterima</td>
-                            <td>-</td>                            
-                            <td>-</td>
-                        </tr>
+                        <%
+                            for (Sampah temp : sesampahan) {
+                                out.print("<tr>");
+                                out.print("<td>" + temp.getKategori() + "</td>"); // jenis sampah
+                                out.print("<td>" + temp.getJumlah() + "</td>"); // jumlahnya
+                                String status = temp.getStatus();
+                                String tanggal = "-";
+                                String bayaran = "-";
+                                out.print("<td>" + status + "</td>"); // status
+                                if (status.equals("Sudah Diterima")) {
+                                    tanggal = temp.getTanggal();
+                                    bayaran = "" + temp.getBayaran();
+                                }
+                                out.print("<td>" + tanggal + "</td>"); // tanggal diterima
+                                out.print("<td>" + bayaran + "</td>"); // bayaran
+                                out.print("<td> x </td>");
+                                out.print("</tr>");
+                            }
+                        %>
                     </table>
                 </div>
             </div>

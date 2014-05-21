@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registrasi Akun Baru</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
-        <script src="others/functions.js"></script>
+        <script src="others/registerFunctions.js"></script>
     </head>
     <body background="assets/images/wood013.jpg">
         <div class="container">
@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="well well-lg">                        
-                        <form name="registerform" role="form" method="post" action="RegisterServlet">
+                        <form name="registerform" role="form" method="post" action="Register">
                             <div class="form-group">
                                 <div class="row">
                                     <div style="text-align: center">

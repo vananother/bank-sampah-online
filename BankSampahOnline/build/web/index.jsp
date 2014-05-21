@@ -15,6 +15,7 @@
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
     </head>
     <body background="assets/images/wood013.jpg">
+
         <div class="container">
             <div class="row">
                 <div class="xs-12">
@@ -41,8 +42,11 @@
                         </div>
                         <%
                             }
+                            if (session.getAttribute("account") != null) {
+                                response.sendRedirect("RiwayatB.jsp");
+                            }
                         %>
-                        <form name="loginForm" action="LoginServlet"  method="post" >
+                        <form name="loginForm" action="Login"  method="post" >
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Username:</label>
                                 <input required name="username" type="username" class="form-control" id="exampleInputEmail1" placeholder="Masukkan username anda">

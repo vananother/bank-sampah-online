@@ -4,6 +4,10 @@
     Author     : van
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="banksampahonline.util.Pesan"%>
+<%@page import="banksampahonline.database.BankSampahOnlineDB"%>
+<%@page import="banksampahonline.util.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +17,19 @@
         <title>Dashboard</title>
     </head>
     <body>
+        <%
+            Account account = (Account) session.getAttribute("account");
+            BankSampahOnlineDB db = new BankSampahOnlineDB();
+            ArrayList<Pesan> messages = new ArrayList<Pesan>();
+            if (account == null) {
+                response.sendRedirect("index.jsp");
+            } else {
+                out.print("Account Info: <BR>");
+                out.print("ID: " + account.getId() + "<BR>");
+                out.print("Role: " + account.getRole() + "<BR>");
+                out.print("Username: " + account.getUsername() + "<BR>");
+            }
+        %>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
@@ -38,20 +55,20 @@
 
                 <div class="col-xs-9">
                     <h1 style="text-align:center">Kirim Pesan ke Pengguna</h1>
-                    <form role="form" action="#">
+                    <form role="form" action="Pesan" method="post">
                         <div class="form-group">
                             <label for="">Cari Pengguna:</label>
-                            <input type="text" class="form-control" placeholder="Username Pengguna">
+                            <input name="penerima" type="text" class="form-control" placeholder="Username Pengguna" required="required">
                         </div>
 
                         <div class="form-group">
                             <label for="">Subjek:</label>
-                            <input type="text" class="form-control" placeholder="Subjek">
+                            <input name="subjek" type="text" class="form-control" placeholder="Subjek" required="required">
                         </div>
 
                         <div class="form-group">
                             <label for="">Pesan:</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea name="isi" class="form-control" rows="3"></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Kirim Pesan</button>

@@ -21,8 +21,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author van
  */
-@WebServlet(name = "PenjemputanServlet", urlPatterns = {"/PenjemputanServlet"})
-public class PenjemputanServlet extends HttpServlet {
+@WebServlet(name = "PenjemputanSampah", urlPatterns = {"/PenjemputanSampah"})
+public class PenjemputanSampah extends HttpServlet {
 
     BankSampahOnlineDB db;
     HttpSession session;
@@ -38,7 +38,14 @@ public class PenjemputanServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+        session = request.getSession();
+        if (session.getAttribute("account") != null) {
+            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+        } else {
+            session.setAttribute("account", null);
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -55,6 +62,11 @@ public class PenjemputanServlet extends HttpServlet {
         db = new BankSampahOnlineDB();
         session = request.getSession();
         Account account = (Account) session.getAttribute("account");
+        if (account == null) {
+            session.setAttribute("account", null);
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
         int acid = account.getId();
         String kategori = request.getParameter("jenisSampah");
         String berat = request.getParameter("berat");
@@ -69,25 +81,34 @@ public class PenjemputanServlet extends HttpServlet {
         sesampahan.setJumlah(Double.parseDouble(berat));
         sesampahan.setKeterangan(keterangan);
         sesampahan.setStatus("Belum Dijemput");
+        sesampahan.setBayaran(0);
         boolean addComplete = db.addSampah(sesampahan);
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Servlet PenjemputanServlet</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h1>Servlet PenjemputanServlet at " + request.getContextPath() + "</h1>");
-        out.println("kategori: "+kategori+"<br>");
-        out.println("berat: "+berat+"<br>");
-        out.println("tanggal: "+tanggal+"<br>");
-        out.println("jam: "+jam+"<br>");
-        out.println("keterangan: "+keterangan+"<br>");
-        out.println("hasil add sampah: "+addComplete+"<br>");
-        out.println("fail because: "+db.failBecause+"<br>");
-        out.println("</body>");
-        out.println("</html>");
+        if (addComplete) {
+            request.setAttribute("errorMessage", "<label class=\"label label-success\">Penambahan permintaan penjemputan berhasil</label>");
+            request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
+        } else {
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Penambahan permintaan penjemputan gagal: "+db.failBecause+"</label><br>");
+            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+        }
+//        response.setContentType("text/html;charset=UTF-8");
+//        PrintWriter out = response.getWriter();
+//        out.println("<!DOCTYPE html>");
+//        out.println("<html>");
+//        out.println("<head>");
+//        out.println("<title>Servlet PenjemputanServlet</title>");
+//        out.println("</head>");
+//        out.println("<body>");
+//        out.println("<h1>Servlet PenjemputanServlet at " + request.getContextPath() + "</h1>");
+//        out.println("akun id: "+account.getId()+ "<br>");
+//        out.println("kategori: " + kategori + "<br>");
+//        out.println("berat: " + berat + "<br>");
+//        out.println("tanggal: " + tanggal + "<br>");
+//        out.println("jam: " + jam + "<br>");
+//        out.println("keterangan: " + keterangan + "<br>");
+//        out.println("hasil add sampah: " + addComplete + "<br>");
+//        out.println("fail because: " + db.failBecause + "<br>");
+//        out.println("</body>");
+//        out.println("</html>");
     }
 
     /**

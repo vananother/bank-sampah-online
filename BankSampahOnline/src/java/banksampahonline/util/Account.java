@@ -14,6 +14,7 @@ public class Account {
     private int id;
     private String role;
     private String username;
+    private String hashPassword;
     private String firstname;
     private String lastname;
     private String email;
@@ -154,6 +155,20 @@ public class Account {
      */
     public void setUangvirtual(double uangvirtual) {
         this.uangvirtual = uangvirtual;
+    }
+
+    /**
+     * @return the hashPassword
+     */
+    public String getHashPassword() {
+        return hashPassword;
+    }
+
+    /**
+     * @param hashPassword the hashPassword to set
+     */
+    public void setHashPassword(String hashPassword) {
+        this.hashPassword = hashPassword;
     }
     
 }

@@ -14,15 +14,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author van
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
-public class RegisterServlet extends HttpServlet {
+@WebServlet(name = "Register", urlPatterns = {"/Register"})
+public class Register extends HttpServlet {
 
     BankSampahOnlineDB db;
+    HttpSession session;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -36,7 +38,11 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("index.jsp");
+        session = (HttpSession) request.getSession().getAttribute("account");
+        if(session != null){
+            request.getSession().setAttribute("account", null);
+        }
+        response.sendRedirect("register.jsp");
 //        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
@@ -52,6 +58,10 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         db = new BankSampahOnlineDB();
+        session = (HttpSession) request.getSession().getAttribute("account");
+        if(session != null){
+            request.getSession().setAttribute("account", null);
+        }
         boolean regSuccess = false;
         String username = request.getParameter("regusername");
         String password = request.getParameter("regpassword");
@@ -76,7 +86,7 @@ public class RegisterServlet extends HttpServlet {
             request.setAttribute("errorMessage", info);
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } else {
-            info = "<label class=\"label label-danger\">Registrasi Gagal, Username telah terdaftar</label>";
+            info = "<label class=\"label label-danger\">Registrasi Gagal, Username telah terdaftar:"+db.failBecause+"</label>";
             request.setAttribute("errorMessage", info);
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }

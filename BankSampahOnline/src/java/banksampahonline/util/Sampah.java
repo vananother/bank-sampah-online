@@ -19,6 +19,7 @@ public class Sampah {
     private String tanggal;
     private String jam;
     private String keterangan;
+    private double bayaran;
 
     public Sampah(){
         this.status = "Belum Dijemput";
@@ -133,6 +134,20 @@ public class Sampah {
      */
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
+    }
+
+    /**
+     * @return the bayaran
+     */
+    public double getBayaran() {
+        return bayaran;
+    }
+
+    /**
+     * @param bayaran the bayaran to set
+     */
+    public void setBayaran(double bayaran) {
+        this.bayaran = bayaran;
     }
     
     
