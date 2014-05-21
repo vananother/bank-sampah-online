@@ -4,6 +4,7 @@
     Author     : Verdiyanto Saputra
 --%>
 
+<%@page import="banksampahonline.database.BankSampahOnlineDB"%>
 <%@page import="banksampahonline.util.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -17,8 +18,12 @@
     <body>
         <%
             Account account = (Account) session.getAttribute("account");
+            BankSampahOnlineDB db = new BankSampahOnlineDB();
+            int unread = 0;
             if (account == null) {
                 response.sendRedirect("Login");
+            } else {
+                unread = db.getUnreadMessagesCount(account.getUsername());
             }
         %>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -37,7 +42,15 @@
                             <a href="RiwayatB.jsp">Riwayat</a>
                         </li>
                         <li>
-                            <a href="PesanKeAdminB.jsp">Kirim Pesan ke Admin</a>
+                            <%
+                                if(unread == 0){
+                                    out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin</a>");
+                                } else {
+                                    out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin: ");
+                                    out.print(unread);
+                                    out.print(" <span class=\"glyphicon glyphicon-envelope\"></span></a>");
+                                }
+                            %>  
                         </li>
                         <li>
                             <a href="PenjemputanSampahB.jsp">Penjemputan Sampah</a>

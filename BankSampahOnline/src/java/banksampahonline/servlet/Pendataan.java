@@ -7,7 +7,6 @@ package banksampahonline.servlet;
 
 import banksampahonline.database.BankSampahOnlineDB;
 import banksampahonline.util.Account;
-import banksampahonline.util.UtilMethods;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -21,12 +20,11 @@ import javax.servlet.http.HttpSession;
  *
  * @author van
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class Login extends HttpServlet {
+@WebServlet(name = "Pendataan", urlPatterns = {"/Pendataan"})
+public class Pendataan extends HttpServlet {
 
-    HttpSession session;
     BankSampahOnlineDB db;
-    Account account;
+    HttpSession session;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +44,15 @@ public class Login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");
+            out.println("<title>Servlet Pendataan</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Pendataan at " + request.getContextPath() + "</h1>");
+            String idSampah = request.getParameter("bayar");
+            String bayaran = request.getParameter("bayaran");
+            String username = request.getParameter("username");
+
+            out.println("idSampah: " + idSampah + "<br>bayaran: " + bayaran + "<br>username: " + username);
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -70,13 +73,8 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         session = request.getSession();
-        account = (Account) session.getAttribute("account");
-        if (account != null) {
-            if (account.getRole().equals("pengguna")) {
-                request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
-            } else if (account.getRole().equals("admin")) {
-                request.getRequestDispatcher("PendataanB.jsp").forward(request, response);
-            }
+        if (session.getAttribute("account") != null) {
+            request.getRequestDispatcher("PendataanB.jsp").forward(request, response);
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
@@ -95,27 +93,20 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        session = request.getSession();
         db = new BankSampahOnlineDB();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String encPass = UtilMethods.hashInput(password);
-        boolean login = db.isLoginValid(username, encPass);
-        if (login) {
-            Account temp = db.login(username, encPass);
-            request.getSession().setAttribute("account", temp);
-            if (temp.getRole().equals("pengguna")) {
-                request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
-            } else if (temp.getRole().equals("admin")) {
-                request.getRequestDispatcher("PendataanB.jsp").forward(request, response);
-            }
-//            session.setAttribute("account", db.login(username, encPass));
-            //request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
-        } else {
+        session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        if (account == null) {
             session.setAttribute("account", null);
-            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Login Gagal, Salah Username atau Password</label>");
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }
+        String idSampah = request.getParameter("bayar");
+        String bayaran = request.getParameter("bayaran");
+        String username = request.getParameter("username");
+        //processRequest(request, response);
+        boolean bayar = db.bayarSampah(idSampah, username, bayaran);
+        response.sendRedirect("PendataanB.jsp");
     }
 
     /**

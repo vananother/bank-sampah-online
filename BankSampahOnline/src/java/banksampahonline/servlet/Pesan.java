@@ -57,7 +57,6 @@ public class Pesan extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -103,26 +102,26 @@ public class Pesan extends HttpServlet {
         account = (Account) session.getAttribute("account");
         
         String penerima = request.getParameter("penerima");
-        int id_penerima = db.getAccountID(penerima);
+        //int id_penerima = db.getAccountID(penerima);
         String subjek = request.getParameter("subjek");
         String isi = request.getParameter("isi");
         java.util.Date date = new java.util.Date();
         Date sDate = new Date(date.getTime());
         java.sql.Time sTime = new java.sql.Time(date.getTime());
-        PrintWriter out = response.getWriter();
-        out.println("pengirim: "+account.getUsername());
-        out.println("id_pengirim: "+account.getId());
-        out.println("penerima: "+penerima);
-        out.println("id penerima: "+id_penerima);
-        out.println("subjek: "+subjek);
-        out.println("isi: "+isi);
-        out.println("date: "+date.toString());
-        out.println("sqlDate: "+sDate.toString());
-        out.println("sql Time: "+sTime.toString());
+//        PrintWriter out = response.getWriter();
+//        out.println("pengirim: "+account.getUsername());
+//        out.println("id_pengirim: "+account.getId());
+//        out.println("penerima: "+penerima);
+       // out.println("id penerima: "+id_penerima);
+//        out.println("subjek: "+subjek);
+//        out.println("isi: "+isi);
+//        out.println("date: "+date.toString());
+//        out.println("sqlDate: "+sDate.toString());
+//        out.println("sql Time: "+sTime.toString());
         
         banksampahonline.util.Pesan pesan = new banksampahonline.util.Pesan();
-        pesan.setId_pengirim(account.getId());
-        pesan.setId_penerima(id_penerima);
+        pesan.setId_pengirim(account.getUsername());
+        pesan.setId_penerima(penerima);
         pesan.setSubjek(subjek);
         pesan.setIsi(isi);
         pesan.setTanggal(sDate.toString());
@@ -130,8 +129,15 @@ public class Pesan extends HttpServlet {
         pesan.setSeen(false);
         
         boolean kirimPesan = db.sendMessage(pesan);
-        out.println("kirim pesan: "+kirimPesan);
-        out.println("failBecause: "+db.failBecause);
+//        out.println("kirim pesan: "+kirimPesan);
+//        out.println("failBecause: "+db.failBecause);
+        if(account.getRole().equals("admin")){
+            response.sendRedirect("PesanKePenggunaB.jsp");
+        } else if(account.getRole().equals("pengguna")){
+            response.sendRedirect("PesanKeAdminB.jsp");
+        } else {
+            response.sendRedirect("index.jsp?logout=1");
+        }
     }
 
     /**

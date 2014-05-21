@@ -12,8 +12,8 @@ package banksampahonline.util;
  */
 public class Pesan {
     private int id;
-    private int id_pengirim;
-    private int id_penerima;
+    private String id_pengirim;
+    private String id_penerima;
     private String subjek;
     private String isi;
     private String tanggal;
@@ -37,28 +37,28 @@ public class Pesan {
     /**
      * @return the id_pengirim
      */
-    public int getId_pengirim() {
+    public String getId_pengirim() {
         return id_pengirim;
     }
 
     /**
      * @param id_pengirim the id_pengirim to set
      */
-    public void setId_pengirim(int id_pengirim) {
+    public void setId_pengirim(String id_pengirim) {
         this.id_pengirim = id_pengirim;
     }
 
     /**
      * @return the id_penerima
      */
-    public int getId_penerima() {
+    public String getId_penerima() {
         return id_penerima;
     }
 
     /**
      * @param id_penerima the id_penerima to set
      */
-    public void setId_penerima(int id_penerima) {
+    public void setId_penerima(String id_penerima) {
         this.id_penerima = id_penerima;
     }
 

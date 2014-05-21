@@ -67,14 +67,14 @@ public class PenjemputanSampah extends HttpServlet {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }
-        int acid = account.getId();
+        //int acid = account.getId();
         String kategori = request.getParameter("jenisSampah");
         String berat = request.getParameter("berat");
         String tanggal = request.getParameter("tanggaljemput");
         String jam = request.getParameter("jamjemput");
         String keterangan = request.getParameter("keterangan");
         Sampah sesampahan = new Sampah();
-        sesampahan.setIdPengguna(acid);
+        sesampahan.setIdPengguna(account.getUsername());
         sesampahan.setJam(jam);
         sesampahan.setTanggal(tanggal);
         sesampahan.setKategori(kategori);
@@ -90,25 +90,6 @@ public class PenjemputanSampah extends HttpServlet {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Penambahan permintaan penjemputan gagal: "+db.failBecause+"</label><br>");
             request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
         }
-//        response.setContentType("text/html;charset=UTF-8");
-//        PrintWriter out = response.getWriter();
-//        out.println("<!DOCTYPE html>");
-//        out.println("<html>");
-//        out.println("<head>");
-//        out.println("<title>Servlet PenjemputanServlet</title>");
-//        out.println("</head>");
-//        out.println("<body>");
-//        out.println("<h1>Servlet PenjemputanServlet at " + request.getContextPath() + "</h1>");
-//        out.println("akun id: "+account.getId()+ "<br>");
-//        out.println("kategori: " + kategori + "<br>");
-//        out.println("berat: " + berat + "<br>");
-//        out.println("tanggal: " + tanggal + "<br>");
-//        out.println("jam: " + jam + "<br>");
-//        out.println("keterangan: " + keterangan + "<br>");
-//        out.println("hasil add sampah: " + addComplete + "<br>");
-//        out.println("fail because: " + db.failBecause + "<br>");
-//        out.println("</body>");
-//        out.println("</html>");
     }
 
     /**

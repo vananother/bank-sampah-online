@@ -12,7 +12,7 @@ package banksampahonline.util;
  */
 public class Sampah {
     private int idSampah;
-    private int idPengguna;
+    private String idPengguna;
     private String kategori;
     private double jumlah;
     private String status;
@@ -41,14 +41,14 @@ public class Sampah {
     /**
      * @return the idPengguna
      */
-    public int getIdPengguna() {
+    public String getIdPengguna() {
         return idPengguna;
     }
 
     /**
      * @param idPengguna the idPengguna to set
      */
-    public void setIdPengguna(int idPengguna) {
+    public void setIdPengguna(String idPengguna) {
         this.idPengguna = idPengguna;
     }
 

@@ -23,11 +23,13 @@
         <% //debugging
             Account account = (Account) session.getAttribute("account");
             ArrayList<Sampah> sesampahan = new ArrayList<Sampah>();
+            BankSampahOnlineDB bdb = new BankSampahOnlineDB();
+            int unread = 0;
             if (account == null) {
                 response.sendRedirect("Login");
             } else {
-                BankSampahOnlineDB bdb = new BankSampahOnlineDB();
-                sesampahan = bdb.getSampah(account.getId());
+                unread = bdb.getUnreadMessagesCount(account.getUsername());
+                sesampahan = bdb.getSampah(account.getUsername());
             }
 %>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -49,7 +51,15 @@
                             <a>Riwayat</a>
                         </li>
                         <li>
-                            <a href="PesanKeAdminB.jsp">Kirim Pesan ke Admin</a>
+                            <%
+                                if(unread == 0){
+                                    out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin</a>");
+                                } else {
+                                    out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin: ");
+                                    out.print(unread);
+                                    out.print(" <span class=\"glyphicon glyphicon-envelope\"></span></a>");
+                                }
+                            %>  
                         </li>
                         <li>
                             <a href="PenjemputanSampahB.jsp">Penjemputan Sampah</a>
@@ -85,9 +95,11 @@
                                 String tanggal = "-";
                                 String bayaran = "-";
                                 out.print("<td>" + status + "</td>"); // status
-                                if (status.equals("Sudah Diterima")) {
+                                if (!status.equals("Belum Dijemput")) {
                                     tanggal = temp.getTanggal();
-                                    bayaran = "" + temp.getBayaran();
+                                }
+                                if (status.equals("Sudah Dibayar")){
+                                    bayaran = temp.getBayaran()+"";
                                 }
                                 out.print("<td>" + tanggal + "</td>"); // tanggal diterima
                                 out.print("<td>" + bayaran + "</td>"); // bayaran

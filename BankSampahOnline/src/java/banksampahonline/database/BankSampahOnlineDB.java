@@ -5,6 +5,7 @@
 package banksampahonline.database;
 
 import banksampahonline.util.Account;
+import banksampahonline.util.Penjemputan;
 import banksampahonline.util.Pesan;
 import banksampahonline.util.Sampah;
 import java.sql.Connection;
@@ -134,12 +135,12 @@ public class BankSampahOnlineDB {
 //                    + " VALUES ('" + sampah.getIdPengguna() + "', '" + sampah.getKategori() + "', '" + sampah.getJumlah() + "', '" + sampah.getStatus() + "', '" + sampah.getTanggal()
 //                    + "', '" + sampah.getJam() + "', '" + sampah.getKeterangan() + ");";
 
-            String query = "INSERT INTO sampah (id_pengguna, kategori, jumlah, status, tanggal, jam, keterangan)"
+            String query = "INSERT INTO sampah (pengirim, kategori, jumlah, status, tanggal, jam, keterangan)"
                     + " VALUES ( ? , ? , ? , ? , ? , ? , ? );";
 
             openConnection();
             pstmt = con.prepareStatement(query);
-            pstmt.setInt(1, sampah.getIdPengguna());
+            pstmt.setString(1, sampah.getIdPengguna());
             pstmt.setString(2, sampah.getKategori());
             pstmt.setDouble(3, sampah.getJumlah());
             pstmt.setString(4, sampah.getStatus());
@@ -179,20 +180,22 @@ public class BankSampahOnlineDB {
         return isValid;
     }
 
-    public ArrayList<Sampah> getSampah(int accountId) {
+    public ArrayList<Sampah> getSampah(String username) {
         ArrayList<Sampah> sesampahan = new ArrayList<Sampah>();
         Sampah temp = new Sampah();
         try {
-            String query = "SELECT * FROM sampah WHERE id_pengguna ='" + accountId + "'";
+            String query = "SELECT * FROM sampah WHERE pengirim = ?";
             ResultSet res = null;
-            int numberOfColumns = 0;
+            // int numberOfColumns = 0;
             openConnection();
-            res = stmt.executeQuery(query);
-            numberOfColumns = res.getMetaData().getColumnCount();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            res = pstmt.executeQuery();
+            // numberOfColumns = res.getMetaData().getColumnCount();
             while (res.next()) {
                 temp = new Sampah();
                 temp.setIdSampah(Integer.parseInt(res.getObject(1).toString()));
-                temp.setIdPengguna(Integer.parseInt(res.getObject(2).toString()));
+                temp.setIdPengguna(res.getObject(2).toString());
                 temp.setKategori(res.getObject(3).toString());
                 temp.setJumlah(Double.parseDouble(res.getObject(4).toString()));
                 temp.setStatus(res.getObject(5).toString());
@@ -200,6 +203,99 @@ public class BankSampahOnlineDB {
                 temp.setJam(res.getObject("jam").toString());
                 temp.setKeterangan(res.getObject("keterangan").toString());
                 temp.setBayaran(Double.parseDouble(res.getObject("bayaran").toString()));
+                sesampahan.add(temp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
+        } finally {
+            closeConnection();
+        }
+        return sesampahan;
+    }
+
+    public boolean jemputSampah(String idSampah) {
+        boolean isValid = true;
+        String query = "";
+        try {
+            query = "UPDATE sampah SET status = \"Sudah Diterima\" WHERE id_sampah = " + idSampah;
+            openConnection();
+            int res = stmt.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
+            isValid = false;
+        } finally {
+            closeConnection();
+        }
+        return isValid;
+    }
+
+    public boolean bayarSampah(String idSampah, String username, String bayaran) {
+        boolean isValid = true;
+        String query = "";
+        try {
+            query = "UPDATE akun, sampah SET sampah.bayaran = " + bayaran + ", "
+                    + "sampah.status = \"Sudah Dibayar\", "
+                    + "akun.uangvirtual = akun.uangvirtual +" + bayaran + ", "
+                    + "akun.totalpoint = akun.totalpoint +" + bayaran
+                    + " WHERE sampah.id_sampah = '" + idSampah + "' AND akun.username = '" + username + "'";
+            openConnection();
+            int res = stmt.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
+            isValid = false;
+        } finally {
+            closeConnection();
+        }
+        return isValid;
+    }
+
+    public ArrayList<Penjemputan> getWaitingList() {
+        ArrayList<Penjemputan> wL = new ArrayList<Penjemputan>();
+        String query = "";
+        try {
+            query = "SELECT * FROM akun, sampah WHERE sampah.status = \"Belum Dijemput\" AND sampah.pengirim = akun.username ORDER BY sampah.tanggal ASC";
+            openConnection();
+            ResultSet res = stmt.executeQuery(query);
+            Penjemputan temp;
+            while (res.next()) {
+                temp = new Penjemputan();
+                temp.setIdSampah(Integer.parseInt(res.getObject("id_sampah").toString()));
+                temp.setIdPengguna(res.getObject("username").toString());
+                temp.setPengirim(res.getObject("username").toString());
+                temp.setKategori(res.getObject("kategori").toString());
+                temp.setJumlah(Double.parseDouble(res.getObject("jumlah").toString()));
+                temp.setAlamat(res.getObject("alamat").toString());
+                temp.setTanggal(res.getObject("tanggal").toString());
+                temp.setJam(res.getObject("jam").toString());
+                temp.setKeterangan(res.getObject("keterangan").toString());
+                wL.add(temp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
+        } finally {
+            closeConnection();
+        }
+        return wL;
+    }
+
+    public ArrayList<Sampah> getPayList() {
+        ArrayList<Sampah> sesampahan = new ArrayList<Sampah>();
+        Sampah temp = new Sampah();
+        String query = "";
+        try {
+            query = "SELECT * FROM `sampah` where status = \"Sudah Diterima\" ORDER BY tanggal ASC";
+            openConnection();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()) {
+                temp = new Sampah();
+                temp.setIdSampah(Integer.parseInt(res.getObject("id_sampah").toString()));
+                temp.setIdPengguna(res.getObject("pengirim").toString());
+                temp.setKategori(res.getObject("kategori").toString());
+                temp.setJumlah(Double.parseDouble(res.getObject("jumlah").toString()));
                 sesampahan.add(temp);
             }
         } catch (SQLException ex) {
@@ -239,7 +335,7 @@ public class BankSampahOnlineDB {
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, id);
             ResultSet res = pstmt.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 username = res.getObject(1).toString();
             }
         } catch (SQLException ex) {
@@ -282,28 +378,29 @@ public class BankSampahOnlineDB {
             isValid = res.next();
         } catch (SQLException ex) {
             Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
         } finally {
             closeConnection();
         }
         return isValid;
     }
 
-    public ArrayList<Pesan> getAccountMessages(int id_pengirim) {
+    public ArrayList<Pesan> getAccountMessages(String id_pengirim) {
         ArrayList<Pesan> messages = new ArrayList<Pesan>();
         String query = "";
         try {
-            query = "SELECT * FROM pesan WHERE id_pengirim = ? OR id_penerima = ?;";
+            query = "SELECT * FROM pesan WHERE id_pengirim = ? OR id_penerima = ? ORDER BY id_pesan DESC;";
             openConnection();
             pstmt = con.prepareStatement(query);
-            pstmt.setInt(1, id_pengirim);
-            pstmt.setInt(2, id_pengirim);
+            pstmt.setString(1, id_pengirim);
+            pstmt.setString(2, id_pengirim);
             ResultSet res = pstmt.executeQuery();
             Pesan temp = null;
             while (res.next()) {
                 temp = new Pesan();
                 temp.setId(Integer.parseInt(res.getObject("id_pesan").toString()));
-                temp.setId_pengirim(Integer.parseInt(res.getObject("id_pengirim").toString()));
-                temp.setId_penerima(Integer.parseInt(res.getObject("id_penerima").toString()));
+                temp.setId_pengirim(res.getObject("id_pengirim").toString());
+                temp.setId_penerima(res.getObject("id_penerima").toString());
                 temp.setSubjek(res.getObject("subjek").toString());
                 temp.setIsi(res.getObject("isi").toString());
                 temp.setTanggal(res.getObject("tanggal").toString());
@@ -319,11 +416,44 @@ public class BankSampahOnlineDB {
         return messages;
     }
 
-    public ArrayList<Pesan> getMessages(int id_pengirim, int id_penerima) {
+    public int getUnreadMessagesCount(String id_penerima) {
+        int count = 0;
+        String query = "";
+        try {
+            query = "SELECT COUNT(1) FROM pesan WHERE id_penerima = ? and seen = '0'";
+            openConnection();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, id_penerima);
+            ResultSet res = pstmt.executeQuery();
+            if (res.next()) {
+                count = Integer.parseInt(res.getObject(1).toString());
+            }
+        } catch (SQLException e) {
+            failBecause = e.getMessage();
+        } finally {
+            closeConnection();
+        }
+        return count;
+    }
+
+    public void readMessages(String id_penerima) {
+        String query = "";
+        try {
+            query = "UPDATE pesan SET seen = '1' WHERE id_penerima = '" + id_penerima + "' AND seen = '0'";
+            openConnection();
+            int res = stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            failBecause = e.getMessage() + "eeee";
+        } finally {
+            closeConnection();
+        }
+    }
+
+    public ArrayList<Pesan> getMessages(String id_pengirim, String id_penerima) {
         ArrayList<Pesan> messages = new ArrayList<Pesan>();
         String query = "";
         try {
-            query = "SELECT * FROM pesan WHERE (id_pengirim = ? AND id_penerima = ?) OR (id_pengirim = ? AND id_penerima = ?)";
+            query = "SELECT * FROM pesan WHERE (id_pengirim = ? AND id_penerima = ?) OR (id_pengirim = ? AND id_penerima = ?) ORDER BY id_pesan DESC";
             openConnection();
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, "" + id_pengirim);
@@ -335,8 +465,8 @@ public class BankSampahOnlineDB {
             while (res.next()) {
                 temp = new Pesan();
                 temp.setId(Integer.parseInt(res.getObject("id_pesan").toString()));
-                temp.setId_pengirim(Integer.parseInt(res.getObject("id_pengirim").toString()));
-                temp.setId_penerima(Integer.parseInt(res.getObject("id_penerima").toString()));
+                temp.setId_pengirim(res.getObject("id_pengirim").toString());
+                temp.setId_penerima(res.getObject("id_penerima").toString());
                 temp.setSubjek(res.getObject("subjek").toString());
                 temp.setIsi(res.getObject("isi").toString());
                 temp.setTanggal(res.getObject("tanggal").toString());
@@ -352,6 +482,27 @@ public class BankSampahOnlineDB {
         return messages;
     }
 
+    public ArrayList<String> getUsers() {
+        ArrayList<String> user = new ArrayList<String>();
+        String query = "";
+        try {
+            query = "SELECT username FROM akun WHERE role = 'pengguna' ";
+            openConnection();
+            pstmt = con.prepareStatement(query);
+            ResultSet res = pstmt.executeQuery();
+            while (res.next()) {
+                user.add(res.getObject(1).toString());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BankSampahOnlineDB.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
+        } finally {
+            closeConnection();
+        }
+        return user;
+    }
+
     public boolean sendMessage(Pesan pesan) {
         boolean isValid = true;
 
@@ -360,8 +511,8 @@ public class BankSampahOnlineDB {
                     + "values ( ?, ?, ?, ?, ?, ?, ?);";
             openConnection();
             pstmt = con.prepareStatement(query);
-            pstmt.setInt(1, pesan.getId_pengirim());
-            pstmt.setInt(2, pesan.getId_penerima());
+            pstmt.setString(1, pesan.getId_pengirim());
+            pstmt.setString(2, pesan.getId_penerima());
             pstmt.setString(3, pesan.getSubjek());
             pstmt.setString(4, pesan.getIsi());
             pstmt.setString(5, pesan.getTanggal());

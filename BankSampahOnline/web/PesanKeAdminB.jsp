@@ -23,13 +23,16 @@
             Account account = (Account) session.getAttribute("account");
             BankSampahOnlineDB db = new BankSampahOnlineDB();
             ArrayList<Pesan> messages = new ArrayList<Pesan>();
+            int unread = 0;
             if (account == null) {
                 response.sendRedirect("index.jsp");
             } else {
-                out.print("Account Info: <BR>");
-                out.print("ID: " + account.getId() + "<BR>");
-                out.print("Role: " + account.getRole() + "<BR>");
-                out.print("Username: " + account.getUsername() + "<BR>");
+                unread = db.getUnreadMessagesCount(account.getUsername());
+                db.readMessages(account.getUsername());
+//                out.print("Account Info: <BR>");
+//                out.print("ID: " + account.getId() + "<BR>");
+//                out.print("Role: " + account.getRole() + "<BR>");
+//                out.print("Username: " + account.getUsername() + "<BR>");
             }
         %>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -47,7 +50,15 @@
                             <a href="RiwayatB.jsp">Riwayat</a>
                         </li>
                         <li class="active">
-                            <a>Kirim Pesan ke Admin</a>
+                            <%
+                                if(unread == 0){
+                                    out.print("<a>Kirim Pesan ke Admin</a>");
+                                } else {
+                                    out.print("<a>Kirim Pesan ke Admin: ");
+                                    out.print(unread);
+                                    out.print(" <span class=\"glyphicon glyphicon-envelope\"></span></a>");
+                                }
+                            %>                            
                         </li>
                         <li>
                             <a href="PenjemputanSampahB.jsp">Penjemputan Sampah</a>
@@ -91,18 +102,18 @@
                     <br>
                     <%
                         //messages = db.getMessages(id_pengirim, id_penerima)
-                        messages = db.getAccountMessages(account.getId());
-                        out.println(messages.size());
-                        out.println(db.failBecause);
+                        messages = db.getAccountMessages(account.getUsername());
+                        //out.println(messages.size());
+                        //out.println(db.failBecause);
                         for (Pesan temp : messages) {
-                            if (temp.getId_pengirim() == account.getId()) {
+                            if (temp.getId_pengirim().equals(account.getUsername())) {
 
                     %>
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <b><%=account.getUsername()%></b>
                             to
-                            <b><%=db.getAccountUsername(temp.getId_penerima())%></b>
+                            <b><%=temp.getId_penerima()%></b>
                             pada
                             <%= temp.getTanggal() + " pukul " + temp.getJam()%>
                         </div>
@@ -117,7 +128,7 @@
                     <div class="panel panel-success">
                         <div class="panel-heading"  style="background-color: #4cae4c; color: #ffffff">
 
-                            <b><%=db.getAccountUsername(temp.getId_pengirim())%></b>
+                            <b><%=temp.getId_pengirim()%></b>
                             to
                             <b><%=account.getUsername()%></b>
                             pada

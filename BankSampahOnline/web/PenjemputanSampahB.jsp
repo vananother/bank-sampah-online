@@ -20,9 +20,11 @@
 
             Account account = (Account) session.getAttribute("account");
             BankSampahOnlineDB db = new BankSampahOnlineDB();
+            int unread = 0;
             if (account == null) {
-                out.print("session.getattribut(account) == null <br>");
                 response.sendRedirect("PenjemputanSampah");
+            }else {
+                unread = db.getUnreadMessagesCount(account.getUsername());
             }
         %>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -40,7 +42,15 @@
                             <a href="RiwayatB.jsp">Riwayat</a>
                         </li>
                         <li>
-                            <a href="PesanKeAdminB.jsp">Kirim Pesan ke Admin</a>
+                            <%
+                                if(unread == 0){
+                                    out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin</a>");
+                                } else {
+                                    out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin: ");
+                                    out.print(unread);
+                                    out.print(" <span class=\"glyphicon glyphicon-envelope\"></span></a>");
+                                }
+                            %>  
                         </li>
                         <li class="active">
                             <a>Penjemputan Sampah</a>

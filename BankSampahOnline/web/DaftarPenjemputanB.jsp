@@ -4,6 +4,11 @@
     Author     : van
 --%>
 
+<%@page import="banksampahonline.util.Penjemputan"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="banksampahonline.util.Sampah"%>
+<%@page import="banksampahonline.database.BankSampahOnlineDB"%>
+<%@page import="banksampahonline.util.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,10 +18,26 @@
         <title>Dashboard</title>
     </head>
     <body>
+        <%
+            Account account = (Account) session.getAttribute("account");
+            BankSampahOnlineDB db = new BankSampahOnlineDB();
+            ArrayList<Penjemputan> wL = new ArrayList<Penjemputan>();
+            int unread = 0;
+            if (account == null) {
+                response.sendRedirect("Login");
+            } else {
+                if (account.getRole().equals("pengguna")) {
+                    response.sendRedirect("Login");
+                }
+                unread = db.getUnreadMessagesCount(account.getUsername());
+                wL = db.getWaitingList();
+                out.print(db.failBecause);
+            }
+        %>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href=href="index.jsp">Keluar</a></li>
+                    <li><a href="index.jsp?logout=1">Keluar</a></li>
                 </ul>
             </div>                
         </nav>
@@ -25,7 +46,15 @@
                 <div class="col-xs-3">
                     <ul class="nav nav-pills nav-stacked">
                         <li>
-                            <a href="PesanKePenggunaB.jsp">Kirim Pesan ke Pengguna</a>
+                            <%
+                                if (unread == 0) {
+                                    out.print("<a href=\"PesanKePenggunaB.jsp\">Kirim Pesan ke Pengguna</a>");
+                                } else {
+                                    out.print("<a href=\"PesanKePenggunaB.jsp\">Kirim Pesan ke Pengguna: ");
+                                    out.print(unread);
+                                    out.print(" <span class=\"glyphicon glyphicon-envelope\"></span></a>");
+                                }
+                            %>
                         </li>
                         <li>
                             <a href="PendataanB.jsp">Pendataan Sampah</a>
@@ -39,76 +68,44 @@
                     <h1>Daftar Penjemputan Sampah</h1>
                     <br>
                     <br>
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Jenis Sampah</th>
-                                <th>Jumlah</th>
-                                <th>Alamat</th>
-                                <th>Tanggal</th>                            
-                                <th>Jam</th>
-                                <th>Keterangan Tambahan</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Botol Plastik</td>
-                                <td>2 Kg</td>
-                                <td>Jalan Tenggiri 1 Nomor 1 Jakarta Selatan</td>
-                                <td>26-04-2014</td>          
-                                <td>12:00</td>
-                                <td>Bawa Karung</td>
-                                <td>
-                                    <label>Sudah Dijemput</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Mainan</td>
-                                <td>4 Kg</td>
-                                <td>Jalan Kentang Raya nomor 12 Perumahan Puri Indah, Bekasi Selatan</td>
-                                <td>7-05-2014</td>          
-                                <td>15:00</td>
-                                <td>-</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">Jemput</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Furnitur</td>
-                                <td>15 Kg</td>
-                                <td>Jalan Kambing 4 Nomor 5 Jakarta Barat</td>
-                                <td>25-04-2014</td>          
-                                <td>13:00</td>
-                                <td>Sepertinya butuh mobil pickup</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">Jemput</button>
-                            </tr>
-                            <tr>
-                                <td>Baju Bekas</td>
-                                <td>2 Kg</td>
-                                <td>Jalan Tikung 3 Nomor 19 Jakarta Timur</td>
-                                <td>23-04-2014</td>          
-                                <td>12:00</td>
-                                <td>-</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">Jemput</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Alat Elektronik</td>
-                                <td>5 Kg</td>
-                                <td>Jalan Tenggiri 1 Nomor 1 Jakarta Selatan</td>
-                                <td>2-05-2014</td>          
-                                <td>12:00</td>
-                                <td>-</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">Jemput</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <form action="DaftarPenjemputan" method="post">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Pengirim</th>
+                                    <th>Jenis Sampah</th>
+                                    <th>Jumlah</th>
+                                    <th>Alamat</th>
+                                    <th>Tanggal</th>                            
+                                    <th>Jam</th>
+                                    <th>Keterangan Tambahan</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                    for (Penjemputan temp : wL) {
+                                %>
+                                <tr>
+                                    <td><%=temp.getPengirim()%></td>
+                                    <td><%=temp.getKategori()%></td>
+                                    <td><%=temp.getJumlah()%></td>
+                                    <td><%=temp.getAlamat()%></td>
+                                    <td><%=temp.getTanggal()%></td>
+                                    <td><%=temp.getJam()%></td>
+                                    <td><%=temp.getKeterangan()%></td>
+                                    <td>
+                                        <button class="btn btn-primary" type="submit" name="jemput" value="<%=temp.getIdSampah()%>">
+                                            Jemput
+                                        </button>
+                                    </td>
+                                </tr>
+                                <%
+                                    }
+                                %>                            
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
             </div>
     </body>
