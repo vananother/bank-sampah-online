@@ -75,9 +75,9 @@ public class Pendataan extends HttpServlet {
         Account account = (Account) session.getAttribute("account");
         if (account != null) {
             if(account.getRole().equals("admin")){
-                response.sendRedirect("PendataanB.jsp");
+                response.sendRedirect("Pendataan.jsp");
             } else if (account.getRole().equals("pengguna")){
-                response.sendRedirect("RiwayatB.jsp");
+                response.sendRedirect("Riwayat.jsp");
             } else {
                 response.sendRedirect("index.jsp?logout=1");
             }
@@ -113,7 +113,7 @@ public class Pendataan extends HttpServlet {
         String username = request.getParameter("username");
         //processRequest(request, response);
         boolean bayar = db.bayarSampah(idSampah, username, bayaran);
-        response.sendRedirect("PendataanB.jsp");
+        response.sendRedirect("Pendataan.jsp");
     }
 
     /**

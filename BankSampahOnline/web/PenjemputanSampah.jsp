@@ -34,7 +34,7 @@
                     <li><a href="index.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="update_profileB.jsp" style="color: #6ECFF5"><b><%= account == null ? "" : account.getFirstname() + " " + account.getLastname()%></b></a></li>
+                    <li><a href="update_profile.jsp" style="color: #6ECFF5"><b><%= account == null ? "" : account.getFirstname() + " " + account.getLastname()%></b></a></li>
                     <li><a style="color: #6ECFF5"><b>Uang virtual anda saat ini: <%= account == null ? "" : account.getUangvirtual()%></b></a></li>
                 </ul>
             </div>                
@@ -44,14 +44,14 @@
                 <div class="col-xs-3">
                     <ul class="nav nav-pills nav-stacked">
                         <li>
-                            <a href="RiwayatB.jsp">Riwayat</a>
+                            <a href="Riwayat.jsp">Riwayat</a>
                         </li>
                         <li>
                             <%
                                 if(unread == 0){
-                                    out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin</a>");
+                                    out.print("<a href=\"PesanKeAdmin.jsp\">Kirim Pesan ke Admin</a>");
                                 } else {
-                                    out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin: ");
+                                    out.print("<a href=\"PesanKeAdmin.jsp\">Kirim Pesan ke Admin: ");
                                     out.print(unread);
                                     out.print(" <span class=\"glyphicon glyphicon-envelope\"></span></a>");
                                 }
@@ -61,7 +61,7 @@
                             <a>Penjemputan Sampah</a>
                         </li>
                         <li>
-                            <a href="update_profileB.jsp">Memperbarui Profil</a>
+                            <a href="update_profile.jsp">Memperbarui Profil</a>
                         </li>
                     </ul>
                 </div>

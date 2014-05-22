@@ -72,9 +72,9 @@ public class Pesan extends HttpServlet {
         account = (Account) session.getAttribute("account");
         if (account != null) {
             if (account.getRole().equals("pengguna")) {
-                request.getRequestDispatcher("PesanKeAdminB.jsp").forward(request, response);
+                request.getRequestDispatcher("PesanKeAdmin.jsp").forward(request, response);
             } else if (account.getRole().equals("admin")) {
-                request.getRequestDispatcher("PesanKePenggunaB.jsp").forward(request, response);
+                request.getRequestDispatcher("PesanKePengguna.jsp").forward(request, response);
             } else {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
@@ -134,18 +134,18 @@ public class Pesan extends HttpServlet {
 //        out.println("failBecause: "+db.failBecause);
         if (kirimPesan) {
             if (account.getRole().equals("admin")) {
-                response.sendRedirect("PesanKePenggunaB.jsp");
+                response.sendRedirect("PesanKePengguna.jsp");
             } else if (account.getRole().equals("pengguna")) {
-                response.sendRedirect("PesanKeAdminB.jsp");
+                response.sendRedirect("PesanKeAdmin.jsp");
             } else {
                 response.sendRedirect("index.jsp?logout=1");
             }
         } else {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Tidak ada pengguna dengan username: "+penerima+" "+db.failBecause+"</label>");
             if (account.getRole().equals("admin")) {
-                request.getRequestDispatcher("PesanKePenggunaB.jsp").forward(request, response);
+                request.getRequestDispatcher("PesanKePengguna.jsp").forward(request, response);
             } else if (account.getRole().equals("pengguna")) {
-                request.getRequestDispatcher("PesanKeAdminB.jsp").forward(request, response);
+                request.getRequestDispatcher("PesanKeAdmin.jsp").forward(request, response);
             }
 
         }

@@ -74,9 +74,9 @@ public class DaftarPenjemputan extends HttpServlet {
         if (account != null) {
 //            request.getRequestDispatcher("DaftarPenjemputan.jsp").forward(request, response);
             if(account.getRole().equals("admin")){
-                response.sendRedirect("DaftarPenjemputanB.jsp");
+                response.sendRedirect("DaftarPenjemputan.jsp");
             } else {
-                response.sendRedirect("RiwayatB.jsp");
+                response.sendRedirect("Riwayat.jsp");
             }
         } else {
             session.setAttribute("account", null);
@@ -106,7 +106,7 @@ public class DaftarPenjemputan extends HttpServlet {
         }
         String idSampah = request.getParameter("jemput");
         boolean jemput = db.jemputSampah(idSampah);
-        response.sendRedirect("DaftarPenjemputanB.jsp");
+        response.sendRedirect("DaftarPenjemputan.jsp");
 
     }
 

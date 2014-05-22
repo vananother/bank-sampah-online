@@ -68,10 +68,10 @@
                         %>
                     </li>
                     <li>
-                        <a href="PendataanB.jsp">Pendataan Sampah</a>
+                        <a href="Pendataan.jsp">Pendataan Sampah</a>
                     </li>
                     <li>
-                        <a href="DaftarPenjemputanB.jsp">Daftar Penjemputan</a>
+                        <a href="DaftarPenjemputan.jsp">Daftar Penjemputan</a>
                     </li>
                 </ul>
             </div>

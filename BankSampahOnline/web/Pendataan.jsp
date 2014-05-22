@@ -47,9 +47,9 @@
                         <li>
                             <%
                                 if (unread == 0) {
-                                    out.print("<a href=\"PesanKePenggunaB.jsp\">Kirim Pesan ke Pengguna</a>");
+                                    out.print("<a href=\"PesanKePengguna.jsp\">Kirim Pesan ke Pengguna</a>");
                                 } else {
-                                    out.print("<a href=\"PesanKePenggunaB.jsp\">Kirim Pesan ke Pengguna: ");
+                                    out.print("<a href=\"PesanKePengguna.jsp\">Kirim Pesan ke Pengguna: ");
                                     out.print(unread);
                                     out.print(" <span class=\"glyphicon glyphicon-envelope\"></span></a>");
                                 }
@@ -59,7 +59,7 @@
                             <a>Pendataan Sampah</a>
                         </li>
                         <li>
-                            <a href="DaftarPenjemputanB.jsp">Daftar Penjemputan</a>
+                            <a href="DaftarPenjemputan.jsp">Daftar Penjemputan</a>
                         </li>
                     </ul>
                 </div>

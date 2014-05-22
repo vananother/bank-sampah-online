@@ -72,11 +72,11 @@ public class Login extends HttpServlet {
         account = (Account) session.getAttribute("account");
         if (account != null) {
             if (account.getRole().equals("pengguna")) {
-//                request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
-                response.sendRedirect("RiwayatB.jsp");
+//                request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+                response.sendRedirect("Riwayat.jsp");
             } else if (account.getRole().equals("admin")) {
-//                request.getRequestDispatcher("PendataanB.jsp").forward(request, response);
-                response.sendRedirect("DaftarPenjemputanB.jsp");
+//                request.getRequestDispatcher("Pendataan.jsp").forward(request, response);
+                response.sendRedirect("DaftarPenjemputan.jsp");
             }
         } else {
             session.setAttribute("account", null);
@@ -106,11 +106,11 @@ public class Login extends HttpServlet {
             Account temp = db.login(username, encPass);
             request.getSession().setAttribute("account", temp);
             if (temp.getRole().equals("pengguna")) {
-//                request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
-                response.sendRedirect("RiwayatB.jsp");
+//                request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+                response.sendRedirect("Riwayat.jsp");
             } else if (temp.getRole().equals("admin")) {
-//                request.getRequestDispatcher("PendataanB.jsp").forward(request, response);
-                response.sendRedirect("PendataanB.jsp");
+//                request.getRequestDispatcher("Pendataan.jsp").forward(request, response);
+                response.sendRedirect("Pendataan.jsp");
             }
 //            session.setAttribute("account", db.login(username, encPass));
             //request.getRequestDispatcher("Riwayat.jsp").forward(request, response);

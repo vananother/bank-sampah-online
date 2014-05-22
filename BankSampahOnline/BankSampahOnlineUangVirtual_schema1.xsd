@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://webService/" xmlns:tns="http://webService/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="getSaldo" type="tns:getSaldo"/>
+
+  <xs:element name="getSaldoResponse" type="tns:getSaldoResponse"/>
+
+  <xs:element name="withdrawUangVirtual" type="tns:withdrawUangVirtual"/>
+
+  <xs:element name="withdrawUangVirtualResponse" type="tns:withdrawUangVirtualResponse"/>
+
+  <xs:complexType name="withdrawUangVirtual">
+    <xs:sequence>
+      <xs:element name="username" type="xs:string" minOccurs="0"/>
+      <xs:element name="password" type="xs:string" minOccurs="0"/>
+      <xs:element name="jumlah" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="withdrawUangVirtualResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getSaldo">
+    <xs:sequence>
+      <xs:element name="userName" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getSaldoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

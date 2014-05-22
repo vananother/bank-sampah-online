@@ -8,6 +8,7 @@ import banksampahonline.util.Account;
 import banksampahonline.util.Penjemputan;
 import banksampahonline.util.Pesan;
 import banksampahonline.util.Sampah;
+import banksampahonline.util.UtilMethods;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -128,6 +129,51 @@ public class BankSampahOnlineDB {
         return isValid;
     }
 
+    public double getSaldo(String username) {
+        double saldo = 0;
+        String query = "";
+        try {
+            query = "SELECT uangvirtual FROM akun WHERE username = ?";
+            openConnection();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            ResultSet res = pstmt.executeQuery();
+            if (res.next()) {
+                saldo = Double.parseDouble(res.getString("uangvirtual").toString());
+            }
+        } catch (SQLException ex) {
+            failBecause = ex.getMessage();
+        } finally {
+            closeConnection();
+        }
+        return saldo;
+    }
+
+    public boolean withDraw(String username, String password, double jumlah) {
+        boolean withDraw = true;
+        if (!isLoginValid(username, UtilMethods.hashInput(password))) {
+            return false; //gagal login
+        }
+
+        double saldo = getSaldo(username);
+        if (jumlah > saldo) {
+            return  false; //"saldo kurang";
+        }
+
+        String query = "UPDATE akun SET uangvirtual = uangvirtual - " + jumlah + " WHERE username = '" + username + "'";
+        try {
+            openConnection();
+            int res = stmt.executeUpdate(query);
+        } catch (SQLException ex) {
+            failBecause = ex.getMessage();
+            withDraw = false;
+        } finally {
+            closeConnection();
+        }
+//        return failBecause;
+        return withDraw;
+    }
+
     public boolean addSampah(Sampah sampah) {
         boolean isValid = true;
         try {
@@ -218,7 +264,7 @@ public class BankSampahOnlineDB {
         boolean isValid = true;
         String query = "";
         try {
-            query = "DELETE FROM sampah WHERE id_sampah = "+idSampah;
+            query = "DELETE FROM sampah WHERE id_sampah = " + idSampah;
             openConnection();
             int res = stmt.executeUpdate(query);
         } catch (SQLException ex) {
@@ -387,11 +433,13 @@ public class BankSampahOnlineDB {
         boolean isValid = false;
 
         try {
-            String query = "SELECT * FROM akun WHERE username ='" + username1 + "' AND password ='" + password1 + "'";
+            String query = "SELECT * FROM akun WHERE username = ? AND password = ? ";
 
             openConnection();
-
-            ResultSet res = stmt.executeQuery(query);
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username1);
+            pstmt.setString(2, password1);
+            ResultSet res = pstmt.executeQuery();
             isValid = res.next();
         } catch (SQLException ex) {
             Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);

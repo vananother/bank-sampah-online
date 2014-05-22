@@ -76,7 +76,7 @@ public class HapusPenjemputan extends HttpServlet {
         }
         String idSampah = request.getParameter("jemput");
         boolean jemput = db.jemputSampah(idSampah);
-        response.sendRedirect("RiwayatB.jsp");
+        response.sendRedirect("Riwayat.jsp");
     }
 
     /**
@@ -100,7 +100,7 @@ public class HapusPenjemputan extends HttpServlet {
         }
         String idSampah = request.getParameter("hapus");
         boolean jemput = db.hapusSampah(idSampah);
-        response.sendRedirect("RiwayatB.jsp");
+        response.sendRedirect("Riwayat.jsp");
     }
 
     /**

@@ -47,8 +47,8 @@ public class PenjemputanSampah extends HttpServlet {
             throws ServletException, IOException {
         session = request.getSession();
         if (session.getAttribute("account") != null) {
-            //request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
-            response.sendRedirect("PenjemputanSampahB.jsp");
+            //request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
+            response.sendRedirect("PenjemputanSampah.jsp");
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
@@ -84,7 +84,7 @@ public class PenjemputanSampah extends HttpServlet {
         String tanggal = request.getParameter("tanggaljemput");
         if (!tanggal.matches("(\\d\\d\\d\\d-\\d{1,2}-\\d{1,2})")) {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Format Tanggal Penjemputan salah1</label>");
-            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+            request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
         }
         Date now = new Date();
@@ -93,14 +93,14 @@ public class PenjemputanSampah extends HttpServlet {
             input = new SimpleDateFormat("yyyy-MM-dd").parse(tanggal);
         } catch (ParseException ex) {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Format Tanggal Penjemputan salah2</label>");
-            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+            request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
         }
         long n1 = input.getTime();
         long n2 = now.getTime();
         if (n1 - n2 < (86400000 * 7)) {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Penjemputan minimal 1 minggu dari hari ini</label>");
-            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+            request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
         }
 
@@ -108,7 +108,7 @@ public class PenjemputanSampah extends HttpServlet {
         //Time time = new Time();
         if (!jam.matches("(\\d{1,2}:\\d{1,2})")) {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Format Jam Penjemputan salah</label>");
-            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+            request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
         }
         //Time inputTime = Time.valueOf(jam);
@@ -118,7 +118,7 @@ public class PenjemputanSampah extends HttpServlet {
         if (timeTime < lowBound || timeTime > upBound) {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Penjemputan hanya dapat dilakukan dari jam 8 pagi sampai jam 10 malam</label>");
 //            request.setAttribute("errorMessage", "<label class=\"label label-danger\">"+lowBound+" "+timeTime+" "+upBound+"</label>");
-            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+            request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
         }
         
@@ -139,10 +139,10 @@ public class PenjemputanSampah extends HttpServlet {
         }
         if (addComplete) {
             request.setAttribute("errorMessage", "<label class=\"label label-success\">Penambahan permintaan penjemputan berhasil</label>");
-            request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
+            request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
         } else {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Penambahan permintaan penjemputan gagal: " + db.failBecause + "</label><br>");
-            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+            request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
         }
     }
 

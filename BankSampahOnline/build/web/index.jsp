@@ -43,7 +43,7 @@
                         <%
                             }
                             if (session.getAttribute("account") != null) {
-                                response.sendRedirect("RiwayatB.jsp");
+                                response.sendRedirect("Riwayat.jsp");
                             }
                         %>
                         <form name="loginForm" action="Login"  method="post" >

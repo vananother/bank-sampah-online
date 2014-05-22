@@ -70,8 +70,8 @@ public class Update_profile extends HttpServlet {
             throws ServletException, IOException {
         session = request.getSession();
         if (session.getAttribute("account") != null) {
-//            request.getRequestDispatcher("udpate_profileB.jsp").forward(request, response);
-            response.sendRedirect("update_profileB.jsp");
+//            request.getRequestDispatcher("udpate_profile.jsp").forward(request, response);
+            response.sendRedirect("update_profile.jsp");
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
@@ -173,23 +173,23 @@ public class Update_profile extends HttpServlet {
             account = db.login(account.getUsername(), account.getHashPassword());
             session.setAttribute("account", account);
             request.setAttribute("errorMessage", "<label class=\"label label-success\">Ubah Profile Sukses</label>");
-            request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
+            request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
         } else {
             if (!update) {
                 if (error != null) {
                     request.setAttribute("errorMessage", "<label class=\"label label-danger\">" + error + "</label>");
-                    request.getRequestDispatcher("update_profileB.jsp").forward(request, response);
+                    request.getRequestDispatcher("update_profile.jsp").forward(request, response);
                 } else {
-                    response.sendRedirect("RiwayatB.jsp");
-//                    request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
+                    response.sendRedirect("Riwayat.jsp");
+//                    request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
                 }
             } else {
                 if (error != null) {
                     request.setAttribute("errorMessage", "<label class=\"label label-danger\">" + error + "</label>");
-                    request.getRequestDispatcher("update_profileB.jsp").forward(request, response);
+                    request.getRequestDispatcher("update_profile.jsp").forward(request, response);
                 } else {
                     request.setAttribute("errorMessage", "<label class=\"label label-danger\">Ubah Profile Gagal</label>");
-                    request.getRequestDispatcher("update_profileB.jsp").forward(request, response);
+                    request.getRequestDispatcher("update_profile.jsp").forward(request, response);
                 }
             }
         }
