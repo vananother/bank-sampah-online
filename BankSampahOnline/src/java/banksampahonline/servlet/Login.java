@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
-    
+
     HttpSession session;
     BankSampahOnlineDB db;
     Account account;
@@ -57,7 +57,6 @@ public class Login extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -73,9 +72,11 @@ public class Login extends HttpServlet {
         account = (Account) session.getAttribute("account");
         if (account != null) {
             if (account.getRole().equals("pengguna")) {
-                request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
+//                request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
+                response.sendRedirect("RiwayatB.jsp");
             } else if (account.getRole().equals("admin")) {
-                request.getRequestDispatcher("PendataanB.jsp").forward(request, response);
+//                request.getRequestDispatcher("PendataanB.jsp").forward(request, response);
+                response.sendRedirect("DaftarPenjemputanB.jsp");
             }
         } else {
             session.setAttribute("account", null);

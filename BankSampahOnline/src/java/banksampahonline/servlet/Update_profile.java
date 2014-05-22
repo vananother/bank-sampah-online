@@ -57,7 +57,6 @@ public class Update_profile extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -71,7 +70,8 @@ public class Update_profile extends HttpServlet {
             throws ServletException, IOException {
         session = request.getSession();
         if (session.getAttribute("account") != null) {
-            request.getRequestDispatcher("udpate_profileB.jsp").forward(request, response);
+//            request.getRequestDispatcher("udpate_profileB.jsp").forward(request, response);
+            response.sendRedirect("update_profileB.jsp");
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
@@ -124,15 +124,15 @@ public class Update_profile extends HttpServlet {
         String newPassword1 = request.getParameter("newPassword1");
         String newPassword2 = request.getParameter("newPassword2");
 
-        boolean isOkay1 = oldPassword.length()  != 0;
+        boolean isOkay1 = oldPassword.length() != 0;
         boolean isOkay2 = (newPassword1.length() != 0) && (newPassword2.length() != 0);
         if (isOkay1 && isOkay2) {
             isOkay1 = db.isLoginValid(account.getUsername(), UtilMethods.hashInput(oldPassword));
-            if(!isOkay1){
+            if (!isOkay1) {
                 error = "Password lama salah.";
             }
             isOkay2 = newPassword1.equals(newPassword2);
-            if(!isOkay2){
+            if (!isOkay2) {
                 error = "Konfirmasi Password Baru tidak sesuai.";
             }
         }
@@ -180,7 +180,8 @@ public class Update_profile extends HttpServlet {
                     request.setAttribute("errorMessage", "<label class=\"label label-danger\">" + error + "</label>");
                     request.getRequestDispatcher("update_profileB.jsp").forward(request, response);
                 } else {
-                    request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
+                    response.sendRedirect("RiwayatB.jsp");
+//                    request.getRequestDispatcher("RiwayatB.jsp").forward(request, response);
                 }
             } else {
                 if (error != null) {

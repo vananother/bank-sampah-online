@@ -44,10 +44,6 @@
 //            out.print("Role: " + account.getRole() + "<BR>");
 //            out.print("Username: " + account.getUsername() + "<BR>");
         }
-
-        if (account.getRole().equals("pengguna")) {
-            response.sendRedirect("PesanKeAdminB.jsp");
-        }
     %>
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">

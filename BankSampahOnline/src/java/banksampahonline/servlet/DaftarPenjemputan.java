@@ -58,7 +58,6 @@ public class DaftarPenjemputan extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -71,8 +70,14 @@ public class DaftarPenjemputan extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         session = request.getSession();
-        if (session.getAttribute("account") != null) {            
-            request.getRequestDispatcher("DaftarPenjemputan.jsp").forward(request, response);
+        Account account = (Account) session.getAttribute("account");
+        if (account != null) {
+//            request.getRequestDispatcher("DaftarPenjemputan.jsp").forward(request, response);
+            if(account.getRole().equals("admin")){
+                response.sendRedirect("DaftarPenjemputanB.jsp");
+            } else {
+                response.sendRedirect("RiwayatB.jsp");
+            }
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");

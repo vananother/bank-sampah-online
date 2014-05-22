@@ -33,7 +33,7 @@ public class PenjemputanSampah extends HttpServlet {
 
     BankSampahOnlineDB db;
     HttpSession session;
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+   
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -47,7 +47,8 @@ public class PenjemputanSampah extends HttpServlet {
             throws ServletException, IOException {
         session = request.getSession();
         if (session.getAttribute("account") != null) {
-            request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+            //request.getRequestDispatcher("PenjemputanSampahB.jsp").forward(request, response);
+            response.sendRedirect("PenjemputanSampahB.jsp");
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");

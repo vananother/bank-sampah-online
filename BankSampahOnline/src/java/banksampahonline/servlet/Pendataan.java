@@ -60,7 +60,6 @@ public class Pendataan extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -73,8 +72,16 @@ public class Pendataan extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         session = request.getSession();
-        if (session.getAttribute("account") != null) {
-            request.getRequestDispatcher("PendataanB.jsp").forward(request, response);
+        Account account = (Account) session.getAttribute("account");
+        if (account != null) {
+            if(account.getRole().equals("admin")){
+                response.sendRedirect("PendataanB.jsp");
+            } else if (account.getRole().equals("pengguna")){
+                response.sendRedirect("RiwayatB.jsp");
+            } else {
+                response.sendRedirect("index.jsp?logout=1");
+            }
+            
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
