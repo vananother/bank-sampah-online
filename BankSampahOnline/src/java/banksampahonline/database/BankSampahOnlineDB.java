@@ -184,7 +184,7 @@ public class BankSampahOnlineDB {
         ArrayList<Sampah> sesampahan = new ArrayList<Sampah>();
         Sampah temp = new Sampah();
         try {
-            String query = "SELECT * FROM sampah WHERE pengirim = ?";
+            String query = "SELECT * FROM sampah WHERE pengirim = ? ORDER BY tanggal DESC";
             ResultSet res = null;
             // int numberOfColumns = 0;
             openConnection();
@@ -212,6 +212,23 @@ public class BankSampahOnlineDB {
             closeConnection();
         }
         return sesampahan;
+    }
+
+    public boolean hapusSampah(String idSampah) {
+        boolean isValid = true;
+        String query = "";
+        try {
+            query = "DELETE FROM sampah WHERE id_sampah = "+idSampah;
+            openConnection();
+            int res = stmt.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
+            isValid = false;
+        } finally {
+            closeConnection();
+        }
+        return isValid;
     }
 
     public boolean jemputSampah(String idSampah) {
@@ -600,4 +617,5 @@ public class BankSampahOnlineDB {
             return retval;
         }
     }
+
 }

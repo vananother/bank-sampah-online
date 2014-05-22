@@ -92,7 +92,7 @@
                                     <td><%=temp.getJumlah()%></td>
                                     <td><%=temp.getAlamat()%></td>
                                     <td><%=temp.getTanggal()%></td>
-                                    <td><%=temp.getJam()%></td>
+                                    <td><%=temp.getJam().substring(0, 5) %></td>
                                     <td><%=temp.getKeterangan()%></td>
                                     <td>
                                         <button class="btn btn-primary" type="submit" name="jemput" value="<%=temp.getIdSampah()%>">

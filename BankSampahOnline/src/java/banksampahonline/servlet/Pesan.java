@@ -71,13 +71,13 @@ public class Pesan extends HttpServlet {
         session = request.getSession();
         account = (Account) session.getAttribute("account");
         if (account != null) {
-            if(account.getRole().equals("pengguna")){
+            if (account.getRole().equals("pengguna")) {
                 request.getRequestDispatcher("PesanKeAdminB.jsp").forward(request, response);
-            } else if(account.getRole().equals("admin")){
+            } else if (account.getRole().equals("admin")) {
                 request.getRequestDispatcher("PesanKePenggunaB.jsp").forward(request, response);
             } else {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
-            }            
+            }
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
@@ -100,7 +100,7 @@ public class Pesan extends HttpServlet {
         session = request.getSession();
         db = new BankSampahOnlineDB();
         account = (Account) session.getAttribute("account");
-        
+
         String penerima = request.getParameter("penerima");
         //int id_penerima = db.getAccountID(penerima);
         String subjek = request.getParameter("subjek");
@@ -112,13 +112,13 @@ public class Pesan extends HttpServlet {
 //        out.println("pengirim: "+account.getUsername());
 //        out.println("id_pengirim: "+account.getId());
 //        out.println("penerima: "+penerima);
-       // out.println("id penerima: "+id_penerima);
+        // out.println("id penerima: "+id_penerima);
 //        out.println("subjek: "+subjek);
 //        out.println("isi: "+isi);
 //        out.println("date: "+date.toString());
 //        out.println("sqlDate: "+sDate.toString());
 //        out.println("sql Time: "+sTime.toString());
-        
+
         banksampahonline.util.Pesan pesan = new banksampahonline.util.Pesan();
         pesan.setId_pengirim(account.getUsername());
         pesan.setId_penerima(penerima);
@@ -127,16 +127,27 @@ public class Pesan extends HttpServlet {
         pesan.setTanggal(sDate.toString());
         pesan.setJam(sTime.toString());
         pesan.setSeen(false);
-        
-        boolean kirimPesan = db.sendMessage(pesan);
+
+        boolean kirimPesan;
+        kirimPesan = db.sendMessage(pesan);
 //        out.println("kirim pesan: "+kirimPesan);
 //        out.println("failBecause: "+db.failBecause);
-        if(account.getRole().equals("admin")){
-            response.sendRedirect("PesanKePenggunaB.jsp");
-        } else if(account.getRole().equals("pengguna")){
-            response.sendRedirect("PesanKeAdminB.jsp");
+        if (kirimPesan) {
+            if (account.getRole().equals("admin")) {
+                response.sendRedirect("PesanKePenggunaB.jsp");
+            } else if (account.getRole().equals("pengguna")) {
+                response.sendRedirect("PesanKeAdminB.jsp");
+            } else {
+                response.sendRedirect("index.jsp?logout=1");
+            }
         } else {
-            response.sendRedirect("index.jsp?logout=1");
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Tidak ada pengguna dengan username: "+penerima+" "+db.failBecause+"</label>");
+            if (account.getRole().equals("admin")) {
+                request.getRequestDispatcher("PesanKePenggunaB.jsp").forward(request, response);
+            } else if (account.getRole().equals("pengguna")) {
+                request.getRequestDispatcher("PesanKeAdminB.jsp").forward(request, response);
+            }
+
         }
     }
 

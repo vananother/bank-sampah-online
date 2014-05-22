@@ -34,7 +34,12 @@ public class UtilMethods {
         }
         return output;
     }
-
+    public static int getSeconds(String jam){
+        int seconds = 0;
+        String[] seq = jam.split(":");
+        seconds += Integer.parseInt(seq[0])*3600 + Integer.parseInt(seq[1])*60;
+        return seconds;
+    }
     public static int registrationFormValidation(String username, String password1, String password2, String firstname, String lastname, String email, String alamat, String phone) {
         if (username == null || username.length() < 4 || username.length() > 32) {
             return 1;

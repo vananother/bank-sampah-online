@@ -82,6 +82,9 @@
 
             <div class="col-xs-9">
                 <h1 style="text-align:center">Kirim Pesan ke Pengguna</h1>
+                <div style="text-align: center">
+                    ${errorMessage}
+                </div>
                 <form role="form" action="Pesan" method="post">
                     <div class="form-group">
                         <label for="">Cari Pengguna:</label>

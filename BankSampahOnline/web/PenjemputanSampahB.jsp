@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+        
         <title>Dashboard</title>
     </head>
     <body>
@@ -30,7 +31,11 @@
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.jsp?logout=1">Keluar</a></li>
+                    <li><a href="index.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="update_profileB.jsp" style="color: #6ECFF5"><b><%= account == null ? "" : account.getFirstname() + " " + account.getLastname()%></b></a></li>
+                    <li><a style="color: #6ECFF5"><b>Uang virtual anda saat ini: <%= account == null ? "" : account.getUangvirtual()%></b></a></li>
                 </ul>
             </div>                
         </nav>
@@ -80,17 +85,19 @@
 
                         <div class="form-group">
                             <label for="">Berat:</label>
-                            <input name="berat" type="number" class="form-control" min="1" step="any" required="required" placeholder="Dalam Kilogram">
+                            <input name="berat" type="number" class="form-control" min="1" step="any" required="required" placeholder="Dalam Kilogram">                            
                         </div>
 
                         <div class="form-group">
                             <label for="">Tanggal Penjemputan:</label>
-                            <input name="tanggaljemput" required="required" type="date" class="form-control" placeholder="yyyy-mm-dd">
+                            <input name="tanggaljemput" id="datePicker" required="required" type="date" class="form-control" placeholder="yyyy-mm-dd">
+                            <small>*Tanggal penjemputan minimal 1 minggu setelah hari ini</small>
                         </div>
 
                         <div class="form-group">
                             <label for="">Jam Penjemputan:</label>
-                            <input name="jamjemput" required="required" type="time" class="form-control" placeholder="hh:mm">
+                            <input name="jamjemput" id="timePicker" required="required" type="time" class="form-control" placeholder="hh:mm">
+                            <small>*Penjemputan hanya dapat dilakukan dari jam 8 pagi sampai jam 10 malam</small>
                         </div>
 
                         <div class="form-group">
@@ -98,7 +105,7 @@
                             <textarea name="keterangan" class="form-control" rows="3"></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Kirim</button>
+                            <button type="submit" class="btn btn-primary">Kirim</button>
                     </form>
                 </div>
             </div>

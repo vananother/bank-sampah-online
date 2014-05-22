@@ -31,15 +31,20 @@
                 unread = bdb.getUnreadMessagesCount(account.getUsername());
                 sesampahan = bdb.getSampah(account.getUsername());
             }
-%>
+            out.print(bdb.failBecause);
+        %>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">                    
-                    <li><a href="index.jsp?logout=1">Keluar</a></li>
+                    <li>
+                        <a href="index.jsp?logout=1" style="color: red; font-weight: bold">
+                            Keluar
+                        </a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="update_profileB.jsp" style="color: #6ECFF5"><b><%= account==null?"":account.getFirstname() + " " + account.getLastname() %></b></a></li>
-                    <li><a style="color: #6ECFF5"><b>Uang virtual anda saat ini: <%= account==null?"":account.getUangvirtual() %></b></a></li>
+                    <li><a href="update_profileB.jsp" style="color: #6ECFF5"><b><%= account == null ? "" : account.getFirstname() + " " + account.getLastname()%></b></a></li>
+                    <li><a style="color: #6ECFF5"><b>Uang virtual anda saat ini: <%= account == null ? "" : account.getUangvirtual()%></b></a></li>
                 </ul>
             </div>                
         </nav>
@@ -52,7 +57,7 @@
                         </li>
                         <li>
                             <%
-                                if(unread == 0){
+                                if (unread == 0) {
                                     out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin</a>");
                                 } else {
                                     out.print("<a href=\"PesanKeAdminB.jsp\">Kirim Pesan ke Admin: ");
@@ -88,23 +93,46 @@
                         </tr>
                         <%
                             for (Sampah temp : sesampahan) {
-                                out.print("<tr>");
-                                out.print("<td>" + temp.getKategori() + "</td>"); // jenis sampah
-                                out.print("<td>" + temp.getJumlah() + "</td>"); // jumlahnya
                                 String status = temp.getStatus();
                                 String tanggal = "-";
                                 String bayaran = "-";
-                                out.print("<td>" + status + "</td>"); // status
                                 if (!status.equals("Belum Dijemput")) {
                                     tanggal = temp.getTanggal();
                                 }
-                                if (status.equals("Sudah Dibayar")){
-                                    bayaran = temp.getBayaran()+"";
+                                if (status.equals("Sudah Dibayar")) {
+                                    bayaran = temp.getBayaran() + "";
                                 }
-                                out.print("<td>" + tanggal + "</td>"); // tanggal diterima
-                                out.print("<td>" + bayaran + "</td>"); // bayaran
-                                out.print("<td> x </td>");
-                                out.print("</tr>");
+                        %>
+                        <tr>
+                            <td><%=temp.getKategori()%></td>
+                            <td><%=temp.getJumlah() + " Kg"%></td>
+                            <td><%=status%></td>
+                            <td><%=tanggal%></td>
+                            <td><%=bayaran%></td>
+                        <form method="post" action="HapusPenjemputan">
+                            <td>
+                                <%
+                                    if (temp.getStatus().equals("Belum Dijemput")) {
+
+
+                                %>
+                                <button class="btn btn-danger" type="submit" name="hapus" value="<%=temp.getIdSampah()%>">
+                                    Batalkan
+                                </button>
+                                <%
+
+                                } else {
+                                %>
+                                <button class="btn btn-danger" disabled="disable">
+                                    Batalkan
+                                </button>
+                                <%
+                                    }
+                                %>
+                            </td>
+                        </form>
+                        </tr>
+                        <%
                             }
                         %>
                     </table>

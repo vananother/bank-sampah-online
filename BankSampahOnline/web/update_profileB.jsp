@@ -29,7 +29,11 @@
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.jsp?logout=1">Keluar</a></li>
+                    <li><a href="index.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="update_profileB.jsp" style="color: #6ECFF5"><b><%= account == null ? "" : account.getFirstname() + " " + account.getLastname()%></b></a></li>
+                    <li><a style="color: #6ECFF5"><b>Uang virtual anda saat ini: <%= account == null ? "" : account.getUangvirtual()%></b></a></li>
                 </ul>
             </div>                
         </nav>
@@ -138,7 +142,7 @@
                                         <button type="button" class="btn btn-warning">Kembali</button>
                                     </a>
                                 </div>
-                                <small>*kosongkan atau biarkan input jika tidak ingin mengubah informasi</small>
+                                <small>*Kosongkan atau biarkan input jika tidak ingin mengubah informasi</small>
                             </div>
 
                         </form>
@@ -147,6 +151,5 @@
                 </div>
             </div>                
         </div>
-    </div>
 </body>
 </html>
