@@ -5,29 +5,29 @@
  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="BankSampahOnlineUangVirtual" targetNamespace="http://webService/" xmlns:tns="http://webService/" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:fi="http://java.sun.com/xml/ns/wsit/2006/09/policy/fastinfoset/service" xmlns:tcp="http://java.sun.com/xml/ns/wsit/2006/09/policy/soaptcp/service" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsrm="http://docs.oasis-open.org/ws-rx/wsrmp/200702" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sc="http://schemas.sun.com/2006/03/wss/server" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy" xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" 
  >
-    <message name="getSaldo"/>
-    <message name="getSaldoResponse"/>
     <message name="withdrawUangVirtual"/>
     <message name="withdrawUangVirtualResponse"/>
+    <message name="getSaldo"/>
+    <message name="getSaldoResponse"/>
     <portType name="BankSampahOnlineUangVirtual">
-        <operation name="getSaldo">
-            <input message="tns:getSaldo"/>
-            <output message="tns:getSaldoResponse"/>
-        </operation>
         <operation name="withdrawUangVirtual">
             <input message="tns:withdrawUangVirtual"/>
             <output message="tns:withdrawUangVirtualResponse"/>
         </operation>
+        <operation name="getSaldo">
+            <input message="tns:getSaldo"/>
+            <output message="tns:getSaldoResponse"/>
+        </operation>
     </portType>
     <binding name="BankSampahOnlineUangVirtualPortBinding" type="tns:BankSampahOnlineUangVirtual">
         <wsp:PolicyReference URI="#BankSampahOnlineUangVirtualPortBindingPolicy"/>
-        <operation name="getSaldo">
-            <input></input>
-            <output></output>
-        </operation>
         <operation name="withdrawUangVirtual">
             <input></input>
             <output></output>
+        </operation>
+        <operation name="getSaldo">
+            <input/>
+            <output/>
         </operation>
     </binding>
     <service name="BankSampahOnlineUangVirtual">
@@ -39,6 +39,30 @@
                 <wsam:Addressing wsp:Optional="false"/>
                 <tcp:OptimizedTCPTransport port="SET_BY_RUNTIME" enabled="true"/>
                 <fi:OptimizedFastInfosetSerialization enabled="false"/>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="BankSampahOnlineUangVirtualPortBinding_getSaldo_Input_Policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sp:EncryptedParts>
+                    <sp:Body/>
+                </sp:EncryptedParts>
+                <sp:SignedParts>
+                    <sp:Body/>
+                </sp:SignedParts>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="BankSampahOnlineUangVirtualPortBinding_getSaldo_Output_Policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sp:EncryptedParts>
+                    <sp:Body/>
+                </sp:EncryptedParts>
+                <sp:SignedParts>
+                    <sp:Body/>
+                </sp:SignedParts>
             </wsp:All>
         </wsp:ExactlyOne>
     </wsp:Policy>

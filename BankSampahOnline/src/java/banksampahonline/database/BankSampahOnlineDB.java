@@ -129,7 +129,11 @@ public class BankSampahOnlineDB {
         return isValid;
     }
 
-    public double getSaldo(String username) {
+    public double getSaldo(String username, String password) {
+        if (!isLoginValid(username, UtilMethods.hashInput(password))) {
+            return -1;
+        }
+
         double saldo = 0;
         String query = "";
         try {
@@ -155,9 +159,9 @@ public class BankSampahOnlineDB {
             return false; //gagal login
         }
 
-        double saldo = getSaldo(username);
+        double saldo = getSaldo(username, password);
         if (jumlah > saldo) {
-            return  false; //"saldo kurang";
+            return false; //"saldo kurang";
         }
 
         String query = "UPDATE akun SET uangvirtual = uangvirtual - " + jumlah + " WHERE username = '" + username + "'";

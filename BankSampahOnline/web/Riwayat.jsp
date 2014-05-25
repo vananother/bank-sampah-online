@@ -31,7 +31,7 @@
                 unread = bdb.getUnreadMessagesCount(account.getUsername());
                 sesampahan = bdb.getSampah(account.getUsername());
             }
-            out.print(bdb.failBecause);
+//            out.print(bdb.failBecause);
         %>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">

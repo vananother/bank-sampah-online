@@ -21,15 +21,6 @@ public class BankSampahOnlineUangVirtual {
     BankSampahOnlineDB db;
     Account account;
 
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "getSaldo")
-    public double getSaldo(@WebParam(name = "userName") String userName) {
-        //TODO write your implementation code here:
-        db = new BankSampahOnlineDB();
-        return db.getSaldo(userName);
-    }
 
     /**
      * Web service operation
@@ -38,5 +29,14 @@ public class BankSampahOnlineUangVirtual {
     public boolean withdrawUangVirtual(@WebParam(name = "username") String username, @WebParam(name = "password") String password, @WebParam(name = "jumlah") double jumlah) {
         db = new BankSampahOnlineDB();
         return db.withDraw(username, password, jumlah);
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getSaldo")
+    public double getSaldo(@WebParam(name = "username") String username, @WebParam(name = "password") String password) {
+        db = new BankSampahOnlineDB();
+        return db.getSaldo(username, password);
     }
 }
