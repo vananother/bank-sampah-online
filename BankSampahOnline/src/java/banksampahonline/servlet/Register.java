@@ -6,6 +6,7 @@
 package banksampahonline.servlet;
 
 import banksampahonline.database.BankSampahOnlineDB;
+import banksampahonline.util.Account;
 import banksampahonline.util.UtilMethods;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,7 +43,8 @@ public class Register extends HttpServlet {
             request.getSession().setAttribute("account", null);
         }
         response.sendRedirect("register.jsp");
-//        request.getRequestDispatcher("index.jsp").forward(request, response);
+        return;
+//        request.getRequestDispatcher("Login.jsp").forward(request, response);
     }
 
     /**
@@ -57,9 +59,11 @@ public class Register extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         db = new BankSampahOnlineDB();
-        session = (HttpSession) request.getSession().getAttribute("account");
-        if(session != null){
+        session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        if(account != null){
             request.getSession().setAttribute("account", null);
+            //return;
         }
         boolean regSuccess = false;
         String username = request.getParameter("regusername");
@@ -78,16 +82,19 @@ public class Register extends HttpServlet {
         } else {
             request.setAttribute("errorMessage", info);
             request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
         }
 
         if (regSuccess) {
             info = "<label class=\"label label-success\">Registrasi Sukses</label>";
             request.setAttribute("errorMessage", info);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         } else {
             info = "<label class=\"label label-danger\">Registrasi Gagal, Username telah terdaftar:"+db.failBecause+"</label>";
             request.setAttribute("errorMessage", info);
             request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
         }
     }
 

@@ -49,10 +49,12 @@ public class PenjemputanSampah extends HttpServlet {
         if (session.getAttribute("account") != null) {
             //request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             response.sendRedirect("PenjemputanSampah.jsp");
+            return;
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         }
     }
 
@@ -74,8 +76,9 @@ public class PenjemputanSampah extends HttpServlet {
         if (account == null) {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
             fail = true;
+            return;
         }
 
         //int acid = account.getId();
@@ -86,6 +89,7 @@ public class PenjemputanSampah extends HttpServlet {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Format Tanggal Penjemputan salah1</label>");
             request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
+            return;
         }
         Date now = new Date();
         Date input = new Date();
@@ -95,6 +99,7 @@ public class PenjemputanSampah extends HttpServlet {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Format Tanggal Penjemputan salah2</label>");
             request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
+            return;
         }
         long n1 = input.getTime();
         long n2 = now.getTime();
@@ -102,6 +107,7 @@ public class PenjemputanSampah extends HttpServlet {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Penjemputan minimal 1 minggu dari hari ini</label>");
             request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
+            return;
         }
 
         String jam = request.getParameter("jamjemput");
@@ -110,6 +116,7 @@ public class PenjemputanSampah extends HttpServlet {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Format Jam Penjemputan salah</label>");
             request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
+            return;
         }
         //Time inputTime = Time.valueOf(jam);
         int timeTime = UtilMethods.getSeconds(jam);
@@ -120,6 +127,7 @@ public class PenjemputanSampah extends HttpServlet {
 //            request.setAttribute("errorMessage", "<label class=\"label label-danger\">"+lowBound+" "+timeTime+" "+upBound+"</label>");
             request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
             fail = true;
+            return;
         }
         
         String keterangan = request.getParameter("keterangan");
@@ -140,9 +148,11 @@ public class PenjemputanSampah extends HttpServlet {
         if (addComplete) {
             request.setAttribute("errorMessage", "<label class=\"label label-success\">Penambahan permintaan penjemputan berhasil</label>");
             request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+            return;
         } else {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Penambahan permintaan penjemputan gagal: " + db.failBecause + "</label><br>");
             request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
+            return;
         }
     }
 

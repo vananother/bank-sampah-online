@@ -93,7 +93,7 @@
                             <div class="row">
                                 <div style="text-align:center">
                                     <button name="register" type="submit" onclick="submitForm()" class="btn btn-primary">Buat Akun Baru</button>
-                                    <a href="index.jsp"><div class="btn btn-default">Kembali</div></a>
+                                    <a href="Login.jsp"><div class="btn btn-default">Kembali</div></a>
                                 </div>
                             </div>
 

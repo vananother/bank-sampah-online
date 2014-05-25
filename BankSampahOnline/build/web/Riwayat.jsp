@@ -28,6 +28,10 @@
             if (account == null) {
                 response.sendRedirect("Login");
             } else {
+                if(account.getRole().equals("superadmin")){
+                    response.sendRedirect("Login");
+                    return;
+                }
                 unread = bdb.getUnreadMessagesCount(account.getUsername());
                 sesampahan = bdb.getSampah(account.getUsername());
             }
@@ -37,7 +41,7 @@
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">                    
                     <li>
-                        <a href="index.jsp?logout=1" style="color: red; font-weight: bold">
+                        <a href="Login.jsp?logout=1" style="color: red; font-weight: bold">
                             Keluar
                         </a>
                     </li>
@@ -48,6 +52,7 @@
                 </ul>
             </div>                
         </nav>
+                
         <div class="container">
             <div class="row">
                 <div class="col-xs-3">
@@ -139,5 +144,6 @@
                 </div>
             </div>
         </div>
+    
     </body>
 </html>

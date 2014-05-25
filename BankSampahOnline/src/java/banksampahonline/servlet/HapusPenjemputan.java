@@ -72,11 +72,13 @@ public class HapusPenjemputan extends HttpServlet {
         if (account == null) {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         }
-        String idSampah = request.getParameter("jemput");
-        boolean jemput = db.jemputSampah(idSampah);
+//        String idSampah = request.getParameter("jemput");
+//        boolean jemput = db.jemputSampah(idSampah);
         response.sendRedirect("Riwayat.jsp");
+        return;
     }
 
     /**
@@ -96,7 +98,7 @@ public class HapusPenjemputan extends HttpServlet {
         if (account == null) {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
         String idSampah = request.getParameter("hapus");
         boolean jemput = db.hapusSampah(idSampah);

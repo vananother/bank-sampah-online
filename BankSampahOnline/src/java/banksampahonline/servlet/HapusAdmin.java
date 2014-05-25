@@ -20,11 +20,12 @@ import javax.servlet.http.HttpSession;
  *
  * @author van
  */
-@WebServlet(name = "Pendataan", urlPatterns = {"/Pendataan"})
-public class Pendataan extends HttpServlet {
+@WebServlet(name = "HapusAdmin", urlPatterns = {"/HapusAdmin"})
+public class HapusAdmin extends HttpServlet {
 
     BankSampahOnlineDB db;
     HttpSession session;
+    Account account;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,15 +45,10 @@ public class Pendataan extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Pendataan</title>");
+            out.println("<title>Servlet HapusAdmin</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Pendataan at " + request.getContextPath() + "</h1>");
-            String idSampah = request.getParameter("bayar");
-            String bayaran = request.getParameter("bayaran");
-            String username = request.getParameter("username");
-
-            out.println("idSampah: " + idSampah + "<br>bayaran: " + bayaran + "<br>username: " + username);
+            out.println("<h1>Servlet HapusAdmin at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -72,22 +68,20 @@ public class Pendataan extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
+        account = (Account) session.getAttribute("account");
         if (account != null) {
-            if (account.getRole().equals("admin")) {
-                response.sendRedirect("Pendataan.jsp");
-                return;
-            } else if (account.getRole().equals("pengguna")) {
+            if (account.getRole().equals("pengguna")) {
+//                request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
                 response.sendRedirect("Riwayat.jsp");
                 return;
-            } else if (account.getRole().equals("superadmin")) {
-                response.sendRedirect("Login");
+            } else if (account.getRole().equals("admin")) {
+//                request.getRequestDispatcher("Pendataan.jsp").forward(request, response);
+                response.sendRedirect("DaftarPenjemputan.jsp");
                 return;
-            } else {
-                response.sendRedirect("Login.jsp?logout=1");
+            } else if (account.getRole().equals("superadmin")) {
+                response.sendRedirect(("TambahAdmin.jsp"));
                 return;
             }
-
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
@@ -107,22 +101,28 @@ public class Pendataan extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        db = new BankSampahOnlineDB();
         session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
-        if (account == null) {
+        if (account != null) {
+            if (!account.getRole().equals("superadmin")) {
+                response.sendRedirect("Login");
+                return;
+            }
+            db = new BankSampahOnlineDB();
+            String username = request.getParameter("target");
+            boolean success = db.deleteAdmin(username);
+            if (success) {
+                request.setAttribute("errorMessage", "<label class=\"label label-success\">Penghapusan Admin Berhasil</label>");
+            } else {
+                request.setAttribute("errorMessage", "<label class=\"label label-danger\">Penghapusan Admin Gagal</label>");
+            }
+            request.getRequestDispatcher("HapusAdmin.jsp").forward(request, response);
+            return;
+        } else {
             session.setAttribute("account", null);
-            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Login Gagal, Salah Username atau Password</label>");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
             return;
         }
-        String idSampah = request.getParameter("bayar");
-        String bayaran = request.getParameter("bayaran");
-        String username = request.getParameter("username");
-        //processRequest(request, response);
-        boolean bayar = db.bayarSampah(idSampah, username, bayaran);
-        response.sendRedirect("Pendataan.jsp");
-        return;
     }
 
     /**

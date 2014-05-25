@@ -74,14 +74,20 @@ public class Login extends HttpServlet {
             if (account.getRole().equals("pengguna")) {
 //                request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
                 response.sendRedirect("Riwayat.jsp");
+                return;
             } else if (account.getRole().equals("admin")) {
 //                request.getRequestDispatcher("Pendataan.jsp").forward(request, response);
                 response.sendRedirect("DaftarPenjemputan.jsp");
+                return;
+            } else if (account.getRole().equals("superadmin")) {
+                response.sendRedirect(("TambahAdmin.jsp"));
+                return;
             }
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         }
     }
 
@@ -108,16 +114,22 @@ public class Login extends HttpServlet {
             if (temp.getRole().equals("pengguna")) {
 //                request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
                 response.sendRedirect("Riwayat.jsp");
+                return;
             } else if (temp.getRole().equals("admin")) {
 //                request.getRequestDispatcher("Pendataan.jsp").forward(request, response);
                 response.sendRedirect("Pendataan.jsp");
+                return;
+            } else if (temp.getRole().equals("superadmin")) {
+                response.sendRedirect(("TambahAdmin.jsp"));
+                return;
             }
 //            session.setAttribute("account", db.login(username, encPass));
             //request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Login Gagal, Salah Username atau Password</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         }
     }
 

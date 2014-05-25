@@ -25,7 +25,8 @@
             if (account == null) {
                 response.sendRedirect("Login");
             } else {
-                if (account.getRole().equals("pengguna")) {
+                
+                if (!account.getRole().equals("admin")) {
                     response.sendRedirect("Login");
                 }
                 unread = db.getUnreadMessagesCount(account.getUsername());
@@ -36,7 +37,7 @@
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.jsp?logout=1">Keluar</a></li>
+                    <li><a href="Login.jsp?logout=1">Keluar</a></li>
                 </ul>
             </div>                
         </nav>

@@ -73,15 +73,19 @@ public class Pesan extends HttpServlet {
         if (account != null) {
             if (account.getRole().equals("pengguna")) {
                 request.getRequestDispatcher("PesanKeAdmin.jsp").forward(request, response);
+                return;
             } else if (account.getRole().equals("admin")) {
                 request.getRequestDispatcher("PesanKePengguna.jsp").forward(request, response);
+                return;
             } else {
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                request.getRequestDispatcher("Login").forward(request, response);
+                return;
             }
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         }
     }
 
@@ -135,17 +139,25 @@ public class Pesan extends HttpServlet {
         if (kirimPesan) {
             if (account.getRole().equals("admin")) {
                 response.sendRedirect("PesanKePengguna.jsp");
+                return;
             } else if (account.getRole().equals("pengguna")) {
                 response.sendRedirect("PesanKeAdmin.jsp");
+                return;
             } else {
-                response.sendRedirect("index.jsp?logout=1");
+                response.sendRedirect("Login");
+                return;
             }
         } else {
-            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Tidak ada pengguna dengan username: "+penerima+" "+db.failBecause+"</label>");
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Tidak ada pengguna dengan username: " + penerima + " " + db.failBecause + "</label>");
             if (account.getRole().equals("admin")) {
                 request.getRequestDispatcher("PesanKePengguna.jsp").forward(request, response);
+                return;
             } else if (account.getRole().equals("pengguna")) {
                 request.getRequestDispatcher("PesanKeAdmin.jsp").forward(request, response);
+                return;
+            } else if (account.getRole().equals("superadmin")) {
+                response.sendRedirect("Login");
+                return;
             }
 
         }

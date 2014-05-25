@@ -75,13 +75,16 @@ public class DaftarPenjemputan extends HttpServlet {
 //            request.getRequestDispatcher("DaftarPenjemputan.jsp").forward(request, response);
             if(account.getRole().equals("admin")){
                 response.sendRedirect("DaftarPenjemputan.jsp");
+                return;
             } else {
-                response.sendRedirect("Riwayat.jsp");
+                response.sendRedirect("Login");
+                return;
             }
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         }
     }
 
@@ -102,12 +105,13 @@ public class DaftarPenjemputan extends HttpServlet {
         if (account == null) {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         }
         String idSampah = request.getParameter("jemput");
         boolean jemput = db.jemputSampah(idSampah);
         response.sendRedirect("DaftarPenjemputan.jsp");
-
+        return;
     }
 
     /**

@@ -25,13 +25,17 @@
             if (account == null) {
                 response.sendRedirect("PenjemputanSampah");
             }else {
+                if(account.getRole().equals("superadmin")){
+                    response.sendRedirect("Login");
+                    return;
+                }
                 unread = db.getUnreadMessagesCount(account.getUsername());
             }
         %>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
+                    <li><a href="Login.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="update_profile.jsp" style="color: #6ECFF5"><b><%= account == null ? "" : account.getFirstname() + " " + account.getLastname()%></b></a></li>

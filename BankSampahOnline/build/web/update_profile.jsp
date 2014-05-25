@@ -23,13 +23,17 @@
             if (account == null) {
                 response.sendRedirect("Login");
             } else {
+                if (account.getRole().equals("superadmin")) {
+                    response.sendRedirect("Login");
+                    return;
+                }
                 unread = db.getUnreadMessagesCount(account.getUsername());
             }
         %>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
+                    <li><a href="Login.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="update_profile.jsp" style="color: #6ECFF5"><b><%= account == null ? "" : account.getFirstname() + " " + account.getLastname()%></b></a></li>
@@ -47,7 +51,7 @@
                         </li>
                         <li>
                             <%
-                                if(unread == 0){
+                                if (unread == 0) {
                                     out.print("<a href=\"PesanKeAdmin.jsp\">Kirim Pesan ke Admin</a>");
                                 } else {
                                     out.print("<a href=\"PesanKeAdmin.jsp\">Kirim Pesan ke Admin: ");
@@ -68,8 +72,8 @@
                     <div class="well well-lg">
                         <h1 align="center">Ubah Profile</h1>
                         <div style="text-align: center">
-                        ${errorMessage}
-                    </div>
+                            ${errorMessage}
+                        </div>
                     </div>
                     <div class="well well-lg">
                         <form role="form" action="Update_profile" method="post">
@@ -77,12 +81,12 @@
                                 <div class="row">
                                     <div class="col-xs-5">
                                         <label>Username:</label>
-                                        <input class="form-control" disabled="disabled" value="<%= account==null?"":account.getUsername()%>">
+                                        <input class="form-control" disabled="disabled" value="<%= account == null ? "" : account.getUsername()%>">
                                     </div>
                                     <div class="col-xs-2"></div>
                                     <div class="col-xs-5">
                                         <label for="exampleInputEmail1">Nama Depan:</label>
-                                        <input name="fname" type="text" class="form-control" id="exampleInputEmail1" placeholder="Ubah Nama Depan" value="<%= account==null?"":account.getFirstname() %>">
+                                        <input name="fname" type="text" class="form-control" id="exampleInputEmail1" placeholder="Ubah Nama Depan" value="<%= account == null ? "" : account.getFirstname()%>">
                                     </div>
                                 </div>
 
@@ -96,7 +100,7 @@
                                     <div class="col-xs-2"></div>
                                     <div class="col-xs-5">
                                         <label for="namaBelakang">Nama Belakang:</label>
-                                        <input name="lname" type="text" class="form-control" id="namaBelakang" placeholder="Ubah Nama Belakang" value="<%= account==null?"":account.getLastname() %>">
+                                        <input name="lname" type="text" class="form-control" id="namaBelakang" placeholder="Ubah Nama Belakang" value="<%= account == null ? "" : account.getLastname()%>">
                                     </div>
                                 </div>
 
@@ -110,7 +114,7 @@
                                     <div class="col-xs-2"></div>
                                     <div class="col-xs-5">
                                         <label for="address">Alamat:</label>
-                                        <textarea name="address" rows="3" class="form-control" id="address" placeholder="Ubah Alamat"><%= account==null?"":account.getAlamat() %></textarea>
+                                        <textarea name="address" rows="3" class="form-control" id="address" placeholder="Ubah Alamat"><%= account == null ? "" : account.getAlamat()%></textarea>
                                     </div>
                                 </div>
 
@@ -123,7 +127,7 @@
                                 <div class="col-xs-2"></div>
                                 <div class="col-xs-5">
                                     <label for="phone">Nomor Handphone:</label>
-                                    <input name="phone" type="number" class="form-control" id="phone" placeholder="Ubah Nomor Telepon" value="<%= account==null?"":account.getPhone() %>">
+                                    <input name="phone" type="number" class="form-control" id="phone" placeholder="Ubah Nomor Telepon" value="<%= account == null ? "" : account.getPhone()%>">
                                 </div>
                             </div>
                             <div class="row">
@@ -131,7 +135,7 @@
                                 <div class="col-xs-2"></div>
                                 <div class="col-xs-5">
                                     <label for="exampleInputPassword1">Alamat email:</label>
-                                    <input disabled="disabled" class="form-control" value="<%= account==null?"":account.getEmail() %>">
+                                    <input disabled="disabled" class="form-control" value="<%= account == null ? "" : account.getEmail()%>">
                                 </div>
                             </div>
                             <br/>
@@ -151,5 +155,5 @@
                 </div>
             </div>                
         </div>
-</body>
+    </body>
 </html>

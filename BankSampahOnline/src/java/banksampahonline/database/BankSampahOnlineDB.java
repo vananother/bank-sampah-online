@@ -20,6 +20,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.util.Pair;
 
 /**
  *
@@ -96,6 +97,63 @@ public class BankSampahOnlineDB {
             closeConnection();
         }
         return admins;
+    }
+
+    public boolean addAdmin(String username, String password) {
+        String query = "";
+        boolean isValid = true;
+        try {
+            query = "INSERT INTO akun (username, password, role) values ( ? , ? , 'admin')";
+            openConnection();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            failBecause = ex.getMessage();
+            isValid = false;
+        } finally {
+            closeConnection();
+        }
+        return isValid;
+    }
+
+    public boolean deleteAdmin(String target) {
+        boolean isValid = true;
+        try {
+            String query = "DELETE FROM akun WHERE username = ?";
+            openConnection();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, target);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            failBecause = ex.getMessage();
+            isValid = false;
+        } finally {
+            closeConnection();
+        }
+        return isValid;
+    }
+
+    public ArrayList<Pair<String, String>> getTopTen() {
+        ArrayList<Pair<String, String>> topTen = new ArrayList<Pair<String, String>>();
+        try {
+            String query = "SELECT username, totalpoint FROM akun WHERE role = 'pengguna' ORDER BY totalpoint DESC;";
+            openConnection();
+            pstmt = con.prepareStatement(query);
+            ResultSet res = pstmt.executeQuery();
+            int index = 0;
+            while (res.next() && index < 10) {
+                topTen.add(new Pair(res.getString(1), res.getString(2)));
+                index++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BankSampahOnlineDB.class.getName()).log(Level.SEVERE, null, ex);
+            failBecause = ex.getMessage();
+        } finally {
+            closeConnection();
+        }
+        return topTen;
     }
 
     public boolean addAccount(String username, String password, String firstname, String lastname, String email, String alamat, String phone) {

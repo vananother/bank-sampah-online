@@ -25,8 +25,12 @@
             ArrayList<Pesan> messages = new ArrayList<Pesan>();
             int unread = 0;
             if (account == null) {
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("Login.jsp");
             } else {
+                if(account.getRole().equals("superadmin")){
+                    response.sendRedirect("Login");
+                    return;
+                }
                 unread = db.getUnreadMessagesCount(account.getUsername());
                 db.readMessages(account.getUsername());
 //                out.print("Account Info: <BR>");

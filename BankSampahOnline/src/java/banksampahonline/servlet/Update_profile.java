@@ -72,10 +72,12 @@ public class Update_profile extends HttpServlet {
         if (session.getAttribute("account") != null) {
 //            request.getRequestDispatcher("udpate_profile.jsp").forward(request, response);
             response.sendRedirect("update_profile.jsp");
+            return;
         } else {
             session.setAttribute("account", null);
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         }
     }
 
@@ -95,105 +97,113 @@ public class Update_profile extends HttpServlet {
         Account account = (Account) session.getAttribute("account");
         if (account == null) {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        }
-        ArrayList<String> updates = new ArrayList<String>();
-        boolean update = false;
-        String error = null;
-        String fname = request.getParameter("fname");
-        if (fname != null && !fname.equals(account.getFirstname())) {
-            if (UtilMethods.nameValidation(fname)) {
-                updates.add("firstname = '" + fname + "'");
-                update = true;
-            } else {
-                error = "Nama Depan mengandung karakter illegal";
-            }
-        }
-
-        String lname = request.getParameter("lname");
-        if (lname != null && !lname.equals(account.getLastname())) {
-            if (UtilMethods.nameValidation(lname)) {
-                updates.add("lastname = '" + lname + "'");
-                update = true;
-            } else {
-                error = "Nama Belakang mengandung karakter illegal";
-            }
-        }
-
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword1 = request.getParameter("newPassword1");
-        String newPassword2 = request.getParameter("newPassword2");
-
-        boolean isOkay1 = oldPassword.length() != 0;
-        boolean isOkay2 = (newPassword1.length() != 0) && (newPassword2.length() != 0);
-        if (isOkay1 && isOkay2) {
-            isOkay1 = db.isLoginValid(account.getUsername(), UtilMethods.hashInput(oldPassword));
-            if (!isOkay1) {
-                error = "Password lama salah.";
-            }
-            isOkay2 = newPassword1.equals(newPassword2);
-            if (!isOkay2) {
-                error = "Konfirmasi Password Baru tidak sesuai.";
-            }
-        }
-
-        if (isOkay1 && isOkay2) {
-            updates.add("password = '" + UtilMethods.hashInput(newPassword1) + "'");
-            update = true;
-        }
-
-        String address = request.getParameter("address");
-        if (address != null && !address.equals(account.getAlamat())) {
-            updates.add("alamat = '" + address + "'");
-            update = true;
-        }
-
-        String phone = request.getParameter("phone");
-        if (phone != null && !phone.equals(account.getPhone())) {
-            if (UtilMethods.phoneNumberValidation(phone)) {
-                updates.add("phone = '" + phone + "'");
-                update = true;
-            } else {
-                error = "Nomor telepon tidak valid";
-            }
-        }
-
-        boolean query = false;
-        if (update) {
-            query = db.updateProfile(updates, account.getId());
-        }
-
-        if (isOkay1 && isOkay2 && query) {
-            session.setAttribute("account", null);
-            request.setAttribute("errorMessage", "<label class=\"label label-success\">Penggantian Password Sukses, Silahkan Login Kembali</label>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        }
-
-        if (query) {
-            account = db.login(account.getUsername(), account.getHashPassword());
-            session.setAttribute("account", account);
-            request.setAttribute("errorMessage", "<label class=\"label label-success\">Ubah Profile Sukses</label>");
-            request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
         } else {
-            if (!update) {
-                if (error != null) {
-                    request.setAttribute("errorMessage", "<label class=\"label label-danger\">" + error + "</label>");
-                    request.getRequestDispatcher("update_profile.jsp").forward(request, response);
+            ArrayList<String> updates = new ArrayList<String>();
+            boolean update = false;
+            String error = null;
+            String fname = request.getParameter("fname");
+            if (fname != null && !fname.equals(account.getFirstname())) {
+                if (UtilMethods.nameValidation(fname)) {
+                    updates.add("firstname = '" + fname + "'");
+                    update = true;
                 } else {
-                    response.sendRedirect("Riwayat.jsp");
-//                    request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+                    error = "Nama Depan mengandung karakter illegal";
                 }
-            } else {
-                if (error != null) {
-                    request.setAttribute("errorMessage", "<label class=\"label label-danger\">" + error + "</label>");
-                    request.getRequestDispatcher("update_profile.jsp").forward(request, response);
+            }
+
+            String lname = request.getParameter("lname");
+            if (lname != null && !lname.equals(account.getLastname())) {
+                if (UtilMethods.nameValidation(lname)) {
+                    updates.add("lastname = '" + lname + "'");
+                    update = true;
                 } else {
-                    request.setAttribute("errorMessage", "<label class=\"label label-danger\">Ubah Profile Gagal</label>");
-                    request.getRequestDispatcher("update_profile.jsp").forward(request, response);
+                    error = "Nama Belakang mengandung karakter illegal";
+                }
+            }
+
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword1 = request.getParameter("newPassword1");
+            String newPassword2 = request.getParameter("newPassword2");
+
+            boolean isOkay1 = oldPassword.length() != 0;
+            boolean isOkay2 = (newPassword1.length() != 0) && (newPassword2.length() != 0);
+            if (isOkay1 && isOkay2) {
+                isOkay1 = db.isLoginValid(account.getUsername(), UtilMethods.hashInput(oldPassword));
+                if (!isOkay1) {
+                    error = "Password lama salah.";
+                }
+                isOkay2 = newPassword1.equals(newPassword2);
+                if (!isOkay2) {
+                    error = "Konfirmasi Password Baru tidak sesuai.";
+                }
+            }
+
+            if (isOkay1 && isOkay2) {
+                updates.add("password = '" + UtilMethods.hashInput(newPassword1) + "'");
+                update = true;
+            }
+
+            String address = request.getParameter("address");
+            if (address != null && !address.equals(account.getAlamat())) {
+                updates.add("alamat = '" + address + "'");
+                update = true;
+            }
+
+            String phone = request.getParameter("phone");
+            if (phone != null && !phone.equals(account.getPhone())) {
+                if (UtilMethods.phoneNumberValidation(phone)) {
+                    updates.add("phone = '" + phone + "'");
+                    update = true;
+                } else {
+                    error = "Nomor telepon tidak valid";
+                }
+            }
+
+            boolean query = false;
+            if (update) {
+                query = db.updateProfile(updates, account.getId());
+            }
+
+            if (isOkay1 && isOkay2 && query) {
+                session.setAttribute("account", null);
+                request.setAttribute("errorMessage", "<label class=\"label label-success\">Penggantian Password Sukses, Silahkan Login Kembali</label>");
+                request.getRequestDispatcher("Login.jsp").forward(request, response);
+//                response.sendRedirect("Login.jsp");
+                return;
+            }
+
+            if (query) {
+                account = db.login(account.getUsername(), account.getHashPassword());
+                session.setAttribute("account", account);
+                request.setAttribute("errorMessage", "<label class=\"label label-success\">Ubah Profile Sukses</label>");
+                request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+                return;
+            } else {
+                if (!update) {
+                    if (error != null) {
+                        request.setAttribute("errorMessage", "<label class=\"label label-danger\">" + error + "</label>");
+                        request.getRequestDispatcher("update_profile.jsp").forward(request, response);
+                        return;
+                    } else {
+                        response.sendRedirect("Riwayat.jsp");
+                        return;
+//                    request.getRequestDispatcher("Riwayat.jsp").forward(request, response);
+                    }
+                } else {
+                    if (error != null) {
+                        request.setAttribute("errorMessage", "<label class=\"label label-danger\">" + error + "</label>");
+                        request.getRequestDispatcher("update_profile.jsp").forward(request, response);
+                        return;
+                    } else {
+                        request.setAttribute("errorMessage", "<label class=\"label label-danger\">Ubah Profile Gagal</label>");
+                        request.getRequestDispatcher("update_profile.jsp").forward(request, response);
+                        return;
+                    }
                 }
             }
         }
-
     }
 
     /**
