@@ -104,24 +104,23 @@ public class Pesan extends HttpServlet {
         session = request.getSession();
         db = new BankSampahOnlineDB();
         account = (Account) session.getAttribute("account");
-
+        if (account == null) {
+            session.setAttribute("account", null);
+            request.setAttribute("errorMessage", "<label class=\"label label-danger\">Anda harus login terlebih dahulu</label>");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            return;
+        }
+        
         String penerima = request.getParameter("penerima");
+        request.setAttribute("penerima", penerima);
         //int id_penerima = db.getAccountID(penerima);
         String subjek = request.getParameter("subjek");
+        request.setAttribute("subjek", subjek);
         String isi = request.getParameter("isi");
+        request.setAttribute("isi", isi);
         java.util.Date date = new java.util.Date();
         Date sDate = new Date(date.getTime());
         java.sql.Time sTime = new java.sql.Time(date.getTime());
-//        PrintWriter out = response.getWriter();
-//        out.println("pengirim: "+account.getUsername());
-//        out.println("id_pengirim: "+account.getId());
-//        out.println("penerima: "+penerima);
-        // out.println("id penerima: "+id_penerima);
-//        out.println("subjek: "+subjek);
-//        out.println("isi: "+isi);
-//        out.println("date: "+date.toString());
-//        out.println("sqlDate: "+sDate.toString());
-//        out.println("sql Time: "+sTime.toString());
 
         banksampahonline.util.Pesan pesan = new banksampahonline.util.Pesan();
         pesan.setId_pengirim(account.getUsername());

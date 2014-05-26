@@ -3,7 +3,7 @@
     Created on : Apr 16, 2014, 9:05:25 AM
     Author     : Verdiyanto Saputra
 --%>
-
+<%@page errorPage="Error.jsp" %>
 <%@page import="banksampahonline.database.BankSampahOnlineDB"%>
 <%@page import="banksampahonline.util.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,7 +29,9 @@
                 }
                 unread = db.getUnreadMessagesCount(account.getUsername());
             }
-        %>
+//            String isSet = request.getAttribute("isSet").toString();
+//            out.print(isSet+"<br>");
+%>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
@@ -58,6 +60,15 @@
                                     out.print(unread);
                                     out.print(" <span class=\"glyphicon glyphicon-envelope\"></span></a>");
                                 }
+                                Object o = request.getAttribute("isSet");
+                                String fname = o == null ? account.getFirstname() : request.getAttribute("fname").toString();
+                                String lname = o == null ? account.getLastname() : request.getAttribute("lname").toString();
+                                String oldPassword = o == null ? "" : request.getAttribute("oldPassword").toString();
+                                String newPassword1 = o == null ? "" : request.getAttribute("newPassword1").toString();
+                                String newPassword2 = o == null ? "" : request.getAttribute("newPassword2").toString();
+                                String address = o == null ? account.getAlamat() : request.getAttribute("address").toString();
+                                String phone = o == null ? account.getPhone() : request.getAttribute("phone").toString();
+                                
                             %>  
                         </li>
                         <li>
@@ -86,7 +97,7 @@
                                     <div class="col-xs-2"></div>
                                     <div class="col-xs-5">
                                         <label for="exampleInputEmail1">Nama Depan:</label>
-                                        <input name="fname" type="text" class="form-control" id="exampleInputEmail1" placeholder="Ubah Nama Depan" value="<%= account == null ? "" : account.getFirstname()%>">
+                                        <input name="fname" type="text" class="form-control" id="exampleInputEmail1" placeholder="Ubah Nama Depan" value="<%= fname %>">
                                     </div>
                                 </div>
 
@@ -95,12 +106,12 @@
                                 <div class="row">
                                     <div class="col-xs-5">
                                         <label for="oldPassword">Password Lama:</label>
-                                        <input name="oldPassword" type="password" class="form-control" id="oldPassword" placeholder="Masukkan Password">
+                                        <input name="oldPassword" value="<%= oldPassword %>" type="password" class="form-control" id="oldPassword" placeholder="Masukkan Password">
                                     </div>
                                     <div class="col-xs-2"></div>
                                     <div class="col-xs-5">
                                         <label for="namaBelakang">Nama Belakang:</label>
-                                        <input name="lname" type="text" class="form-control" id="namaBelakang" placeholder="Ubah Nama Belakang" value="<%= account == null ? "" : account.getLastname()%>">
+                                        <input name="lname" type="text" class="form-control" id="namaBelakang" placeholder="Ubah Nama Belakang" value="<%= lname %>">
                                     </div>
                                 </div>
 
@@ -109,12 +120,12 @@
                                 <div class="row">
                                     <div class="col-xs-5">
                                         <label for="newPassword1">Password Baru:</label>
-                                        <input name="newPassword1" type="password" class="form-control" id="newPassword1" placeholder="Masukkan Password Baru" oninput="passwordValidation(this)">
+                                        <input name="newPassword1" value="<%= newPassword1 %>" type="password" class="form-control" id="newPassword1" placeholder="Masukkan Password Baru" oninput="passwordValidation(this)">
                                     </div>
                                     <div class="col-xs-2"></div>
                                     <div class="col-xs-5">
                                         <label for="address">Alamat:</label>
-                                        <textarea name="address" rows="3" class="form-control" id="address" placeholder="Ubah Alamat"><%= account == null ? "" : account.getAlamat()%></textarea>
+                                        <textarea name="address" rows="3" class="form-control" id="address" placeholder="Ubah Alamat"><%= address %></textarea>
                                     </div>
                                 </div>
 
@@ -122,12 +133,12 @@
                             <div class="row">
                                 <div class="col-xs-5">
                                     <label for="exampleInputPassword1">Konfirmasi Password Baru:</label>
-                                    <input name="newPassword2" type="password" class="form-control" id="exampleInputPassword1" placeholder="Confirm new password" oninput="confirmPassword(this)">
+                                    <input name="newPassword2" type="password" value="<%= newPassword2 %>" class="form-control" id="exampleInputPassword1" placeholder="Confirm new password" oninput="confirmPassword(this)">
                                 </div>
                                 <div class="col-xs-2"></div>
                                 <div class="col-xs-5">
                                     <label for="phone">Nomor Handphone:</label>
-                                    <input name="phone" type="number" class="form-control" id="phone" placeholder="Ubah Nomor Telepon" value="<%= account == null ? "" : account.getPhone()%>">
+                                    <input name="phone" value="<%= phone %>" type="number" class="form-control" id="phone" placeholder="Ubah Nomor Telepon" value="<%= account == null ? "" : account.getPhone()%>">
                                 </div>
                             </div>
                             <div class="row">

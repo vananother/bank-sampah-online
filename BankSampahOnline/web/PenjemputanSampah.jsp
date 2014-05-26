@@ -3,7 +3,7 @@
     Created on : Apr 14, 2014, 12:16:09 PM
     Author     : van
 --%>
-
+<%@page errorPage="Error.jsp" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="banksampahonline.database.BankSampahOnlineDB"%>
 <%@page import="banksampahonline.util.Account"%>
@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
-        
+
         <title>Dashboard</title>
     </head>
     <body>
@@ -24,8 +24,8 @@
             int unread = 0;
             if (account == null) {
                 response.sendRedirect("PenjemputanSampah");
-            }else {
-                if(account.getRole().equals("superadmin")){
+            } else {
+                if (account.getRole().equals("superadmin")) {
                     response.sendRedirect("Login");
                     return;
                 }
@@ -52,7 +52,7 @@
                         </li>
                         <li>
                             <%
-                                if(unread == 0){
+                                if (unread == 0) {
                                     out.print("<a href=\"PesanKeAdmin.jsp\">Kirim Pesan ke Admin</a>");
                                 } else {
                                     out.print("<a href=\"PesanKeAdmin.jsp\">Kirim Pesan ke Admin: ");
@@ -77,11 +77,21 @@
                     <form role="form" method="post" action="PenjemputanSampah">
                         <div class="form-group">
                             <label for="">Jenis Sampah:</label>
-                            <select class="form-control" name="jenisSampah">
+                            <select class="form-control" name="jenisSampah"  >
+
                                 <%
                                     ArrayList<String> kategori = db.getKategori();
+                                    String jenis = (String) request.getAttribute("jenisSampah");
                                     for (String ktgr : kategori) {
-                                        out.println("<option>" + ktgr + "</option>");
+                                        if (jenis != null && ktgr.equals(jenis)) {
+                                %>
+                                <option selected="selected"><%= jenis%> </option>
+                                <%
+                                } else {
+                                %>
+                                <option><%= ktgr%></option>
+                                <%
+                                        }
                                     }
                                 %>
                             </select>
@@ -89,27 +99,28 @@
 
                         <div class="form-group">
                             <label for="">Berat:</label>
-                            <input name="berat" type="number" class="form-control" min="1" step="any" required="required" placeholder="Dalam Kilogram">                            
+                            <input name="berat" type="number" class="form-control" min="1" step="any" required="required" placeholder="Dalam Kilogram" value="${berat}">                            
                         </div>
 
                         <div class="form-group">
                             <label for="">Tanggal Penjemputan:</label>
-                            <input name="tanggaljemput" id="datePicker" required="required" type="date" class="form-control" placeholder="yyyy-mm-dd">
+                            <input name="tanggaljemput" value="${tanggaljemput}" id="datePicker" required="required" type="date" class="form-control" placeholder="yyyy-mm-dd">
                             <small>*Tanggal penjemputan minimal 1 minggu setelah hari ini</small>
                         </div>
 
                         <div class="form-group">
                             <label for="">Jam Penjemputan:</label>
-                            <input name="jamjemput" id="timePicker" required="required" type="time" class="form-control" placeholder="hh:mm">
+                            <input name="jamjemput" value="${jamjemput}" id="timePicker" required="required" type="time" class="form-control" placeholder="hh:mm">
                             <small>*Penjemputan hanya dapat dilakukan dari jam 8 pagi sampai jam 10 malam</small>
                         </div>
 
                         <div class="form-group">
                             <label for="">Keterangan Tambahan:</label>
-                            <textarea name="keterangan" class="form-control" rows="3"></textarea>
+                            <textarea name="keterangan"  class="form-control" rows="3">${keterangan}</textarea>
                         </div>
 
-                            <button type="submit" class="btn btn-primary">Kirim</button>
+                        <button type="submit" class="btn btn-primary">Kirim</button>
+                        <hr>
                     </form>
                 </div>
             </div>

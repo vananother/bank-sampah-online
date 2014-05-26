@@ -3,7 +3,7 @@
     Created on : May 25, 2014, 12:34:35 PM
     Author     : van
 --%>
-
+<%@page errorPage="Error.jsp" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="banksampahonline.database.BankSampahOnlineDB"%>
 <%@page import="banksampahonline.util.Sampah"%>
@@ -31,7 +31,7 @@
                 //unread = bdb.getUnreadMessagesCount(account.getUsername());
 //                sesampahan = bdb.getSampah(account.getUsername());
             }
-            out.print(bdb.failBecause);
+//            out.print(bdb.failBecause);
         %>
 
         <nav class="navbar navbar-inverse" role="navigation">
@@ -69,15 +69,15 @@
                     <form role="form" action="TambahAdmin" method="post">
                         <div class="form-group">
                             <label for="">Username Admin baru:</label>
-                            <input name="username" type="text" class="form-control" placeholder="Username" required="required">
+                            <input name="username" value="${username}" type="text" class="form-control" placeholder="Username" required="required">
                         </div>
                         <div class="form-group">
                             <label for="">Password:</label>
-                            <input name="password1" type="password" class="form-control" placeholder="Password" required="required">
+                            <input name="password1" value="${password1}" type="password" class="form-control" placeholder="Password" required="required">
                         </div>
                         <div class="form-group">
                             <label for="">Konfirmasi Password:</label>
-                            <input name="password2" type="password" class="form-control" placeholder="Konfirmasi Password" required="required">
+                            <input name="password2" value="${password2}" type="password" class="form-control" placeholder="Konfirmasi Password" required="required">
                         </div>
                         <button class="btn btn-primary" type="submit">
                             Tambah Admin

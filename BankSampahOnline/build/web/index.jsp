@@ -3,7 +3,7 @@
     Created on : May 25, 2014, 12:03:04 PM
     Author     : van
 --%>
-
+<%@page errorPage="Error.jsp" %>
 <%@page import="javafx.util.Pair"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="banksampahonline.database.BankSampahOnlineDB"%>

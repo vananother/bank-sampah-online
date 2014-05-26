@@ -33,7 +33,7 @@ public class PenjemputanSampah extends HttpServlet {
 
     BankSampahOnlineDB db;
     HttpSession session;
-   
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -82,9 +82,18 @@ public class PenjemputanSampah extends HttpServlet {
         }
 
         //int acid = account.getId();
+        request.setAttribute("isSet", "True");
         String kategori = request.getParameter("jenisSampah");
+        request.setAttribute("jenisSampah", kategori);
         String berat = request.getParameter("berat");
+        request.setAttribute("berat", berat);
         String tanggal = request.getParameter("tanggaljemput");
+        request.setAttribute("tanggaljemput", tanggal);
+        String jam = request.getParameter("jamjemput");
+        request.setAttribute("jamjemput", jam);
+        String keterangan = request.getParameter("keterangan");
+        request.setAttribute("keterangan", keterangan);
+
         if (!tanggal.matches("(\\d\\d\\d\\d-\\d{1,2}-\\d{1,2})")) {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Format Tanggal Penjemputan salah1</label>");
             request.getRequestDispatcher("PenjemputanSampah.jsp").forward(request, response);
@@ -110,7 +119,6 @@ public class PenjemputanSampah extends HttpServlet {
             return;
         }
 
-        String jam = request.getParameter("jamjemput");
         //Time time = new Time();
         if (!jam.matches("(\\d{1,2}:\\d{1,2})")) {
             request.setAttribute("errorMessage", "<label class=\"label label-danger\">Format Jam Penjemputan salah</label>");
@@ -129,8 +137,7 @@ public class PenjemputanSampah extends HttpServlet {
             fail = true;
             return;
         }
-        
-        String keterangan = request.getParameter("keterangan");
+
         Sampah sesampahan = new Sampah();
         sesampahan.setIdPengguna(account.getUsername());
         sesampahan.setJam(jam);

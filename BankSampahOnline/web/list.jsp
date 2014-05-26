@@ -2,7 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.sql.*"%>
 <%@page import="java.util.*"%>
-
+<%@page errorPage="Error.jsp" %>
 <%
     try {
         String s[] = null;

@@ -105,14 +105,18 @@ public class TambahAdmin extends HttpServlet {
         session = request.getSession();
         account = (Account) session.getAttribute("account");
         if (account != null) {
-            if(!account.getRole().equals("superadmin")){
+            if (!account.getRole().equals("superadmin")) {
                 response.sendRedirect("Login");
                 return;
             }
             db = new BankSampahOnlineDB();
             String username = request.getParameter("username");
+            request.setAttribute("username", username);
             String password1 = request.getParameter("password1");
+            request.setAttribute("password1", password1);
             String password2 = request.getParameter("password2");
+            request.setAttribute("password2", password2);
+
             if (!password1.equals(password2)) {
                 //confirm password gagal
                 request.setAttribute("errorMessage", "<label class=\"label label-danger\">Password tidak sesuai</label>");

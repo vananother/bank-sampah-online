@@ -3,7 +3,7 @@
     Created on : Apr 14, 2014, 12:16:09 PM
     Author     : van
 --%>
-
+<%@page errorPage="Error.jsp" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="banksampahonline.util.Sampah"%>
 <%@page import="banksampahonline.database.BankSampahOnlineDB"%>
@@ -32,7 +32,7 @@
                 unread = db.getUnreadMessagesCount(account.getUsername());
                 sesampahan = db.getPayList();
             }
-            out.println(db.failBecause);
+//            out.println(db.failBecause);
         %>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">

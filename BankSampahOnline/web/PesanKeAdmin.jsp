@@ -5,6 +5,7 @@
 --%>
 
 <%@page import="banksampahonline.util.Pesan"%>
+<%@page errorPage="Error.jsp" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="banksampahonline.database.BankSampahOnlineDB"%>
 <%@page import="banksampahonline.util.Account"%>
@@ -33,16 +34,12 @@
                 }
                 unread = db.getUnreadMessagesCount(account.getUsername());
                 db.readMessages(account.getUsername());
-//                out.print("Account Info: <BR>");
-//                out.print("ID: " + account.getId() + "<BR>");
-//                out.print("Role: " + account.getRole() + "<BR>");
-//                out.print("Username: " + account.getUsername() + "<BR>");
             }
         %>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
+                    <li><a href="Login.jsp?logout=1" style="color: red; font-weight: bold">Keluar</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="update_profile.jsp" style="color: #6ECFF5"><b><%= account == null ? "" : account.getFirstname() + " " + account.getLastname()%></b></a></li>
@@ -93,19 +90,19 @@
 
                         <div class="form-group">
                             <label for="">Subjek:</label>
-                            <input name="subjek" type="text" class="form-control" placeholder="Subjek" required="required">
+                            <input name="subjek" value="${subjek}" type="text" class="form-control" placeholder="Subjek" required="required">
                         </div>
 
                         <div class="form-group">
                             <label for="">Pesan:</label>
-                            <textarea name="isi" class="form-control" rows="3" required="required"></textarea>
+                            <textarea name="isi" value="${isi}" class="form-control" rows="3" required="required"></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Kirim Pesan</button>
                     </form>
 
                     <br>
-                    <br>
+                    <hr style="height: 3px;color:#333 ">
                     <h1>Pesan</h1>
                     <br>
                     <%
@@ -151,30 +148,8 @@
                     <%                                    }
                         }
                     %>
-                    <!--div class="panel panel-primary">
-                        <div class="panel-heading">Pengguna 1 (05/17/2014)</div>
-                        <div class="panel-body">
-                            <h4>Meminta Penjemputan</h4>
-                            Mas, tolong cek penjemputan sampah dong, saya baru submit tuh...
-                        </div>
-                    </div>
-
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">Admin 1 (05/17/2014)</div>
-                        <div class="panel-body">
-                            <h4>RE: Meminta Penjemputan</h4>
-                            Okay, nanti saya kesana!
-                        </div>
-                    </div>
-
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">Pengguna 1 (05/17/2014)</div>
-                        <div class="panel-body">
-                            <h4>Tanpa Subjek</h4>
-                            k
-                        </div>
-                    </div-->
                 </div>
+                <hr>
             </div>
         </div>
     </body>

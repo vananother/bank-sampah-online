@@ -103,7 +103,22 @@ public class Update_profile extends HttpServlet {
             ArrayList<String> updates = new ArrayList<String>();
             boolean update = false;
             String error = null;
+            request.setAttribute("isSet", "ok");
             String fname = request.getParameter("fname");
+            request.setAttribute("fname", fname);
+            String lname = request.getParameter("lname");
+            request.setAttribute("lname", lname);
+            String oldPassword = request.getParameter("oldPassword");
+            request.setAttribute("oldPassword", oldPassword);
+            String newPassword1 = request.getParameter("newPassword1");
+            request.setAttribute("newPassword1", newPassword1);
+            String newPassword2 = request.getParameter("newPassword2");
+            request.setAttribute("newPassword2", newPassword2);
+            String address = request.getParameter("address");
+            request.setAttribute("address", address);
+            String phone = request.getParameter("phone");
+            request.setAttribute("phone", phone);
+
             if (fname != null && !fname.equals(account.getFirstname())) {
                 if (UtilMethods.nameValidation(fname)) {
                     updates.add("firstname = '" + fname + "'");
@@ -113,7 +128,6 @@ public class Update_profile extends HttpServlet {
                 }
             }
 
-            String lname = request.getParameter("lname");
             if (lname != null && !lname.equals(account.getLastname())) {
                 if (UtilMethods.nameValidation(lname)) {
                     updates.add("lastname = '" + lname + "'");
@@ -122,10 +136,6 @@ public class Update_profile extends HttpServlet {
                     error = "Nama Belakang mengandung karakter illegal";
                 }
             }
-
-            String oldPassword = request.getParameter("oldPassword");
-            String newPassword1 = request.getParameter("newPassword1");
-            String newPassword2 = request.getParameter("newPassword2");
 
             boolean isOkay1 = oldPassword.length() != 0;
             boolean isOkay2 = (newPassword1.length() != 0) && (newPassword2.length() != 0);
@@ -145,13 +155,11 @@ public class Update_profile extends HttpServlet {
                 update = true;
             }
 
-            String address = request.getParameter("address");
             if (address != null && !address.equals(account.getAlamat())) {
                 updates.add("alamat = '" + address + "'");
                 update = true;
             }
 
-            String phone = request.getParameter("phone");
             if (phone != null && !phone.equals(account.getPhone())) {
                 if (UtilMethods.phoneNumberValidation(phone)) {
                     updates.add("phone = '" + phone + "'");

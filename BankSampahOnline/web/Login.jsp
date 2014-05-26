@@ -3,7 +3,7 @@
     Created on : Apr 16, 2014, 8:16:08 AM
     Author     : Verdiyanto Saputra
 --%>
-
+<%@page errorPage="Error.jsp" %>
 <%@page import="banksampahonline.database.BankSampahOnlineDB"%>
 <%@page import="banksampahonline.util.UtilMethods"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

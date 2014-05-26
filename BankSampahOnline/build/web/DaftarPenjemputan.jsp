@@ -3,7 +3,7 @@
     Created on : Apr 14, 2014, 12:16:09 PM
     Author     : van
 --%>
-
+<%@page errorPage="Error.jsp" %>
 <%@page import="banksampahonline.util.Penjemputan"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="banksampahonline.util.Sampah"%>
@@ -31,7 +31,7 @@
                 }
                 unread = db.getUnreadMessagesCount(account.getUsername());
                 wL = db.getWaitingList();
-                out.print(db.failBecause);
+//                out.print(db.failBecause);
             }
         %>
         <nav class="navbar navbar-inverse" role="navigation">

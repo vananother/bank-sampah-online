@@ -67,13 +67,21 @@ public class Register extends HttpServlet {
         }
         boolean regSuccess = false;
         String username = request.getParameter("regusername");
+        request.setAttribute("regusername", username);
         String password = request.getParameter("regpassword");
+        request.setAttribute("regpassword", password);
         String password2 = request.getParameter("regpassword2");
+        request.setAttribute("regpassword2", password2);
         String firstname = request.getParameter("regfirstname");
+        request.setAttribute("regfirstname", firstname);
         String lastname = request.getParameter("reglastname");
+        request.setAttribute("reglastname", lastname);
         String email = request.getParameter("regemail");
+        request.setAttribute("regemail", email);
         String address = request.getParameter("regalamat");
+        request.setAttribute("regalamat", address);
         String phone = request.getParameter("regphone");
+        request.setAttribute("regphone", phone);
         String encPass = UtilMethods.hashInput(password);
 
         String info = UtilMethods.regFormValidation(username, password, password2, firstname, lastname, email, address, phone);
@@ -91,7 +99,7 @@ public class Register extends HttpServlet {
             request.getRequestDispatcher("Login.jsp").forward(request, response);
             return;
         } else {
-            info = "<label class=\"label label-danger\">Registrasi Gagal, Username telah terdaftar:"+db.failBecause+"</label>";
+            info = "<label class=\"label label-danger\">Registrasi Gagal: "+db.failBecause+"</label>";
             request.setAttribute("errorMessage", info);
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;

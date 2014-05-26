@@ -5,6 +5,7 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page errorPage="Error.jsp" %>
 <%@page import="banksampahonline.util.Pesan"%>
 <%@page import="banksampahonline.database.BankSampahOnlineDB"%>
 <%@page import="banksampahonline.util.Account"%>
@@ -84,17 +85,17 @@
                 <form role="form" action="Pesan" method="post">
                     <div class="form-group">
                         <label for="">Cari Pengguna:</label>
-                        <input name="penerima" id="penerima" type="text" class="form-control" placeholder="Username Pengguna" required="required">
+                        <input name="penerima" value="${penerima}" id="penerima" type="text" class="form-control" placeholder="Username Pengguna" required="required">
                     </div>
 
                     <div class="form-group">
                         <label for="">Subjek:</label>
-                        <input name="subjek" type="text" class="form-control" placeholder="Subjek" required="required">
+                        <input name="subjek" type="text" value="${subjek}" class="form-control" placeholder="Subjek" required="required">
                     </div>
 
                     <div class="form-group">
                         <label for="">Pesan:</label>
-                        <textarea name="isi" class="form-control" rows="3"></textarea>
+                        <textarea name="isi" class="form-control" rows="3">${isi}</textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Kirim Pesan</button>
